@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d90d98fe-d9c2-43c2-b676-2d836f56271d" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://geoitddev.geocom.com.uy:8554/v2/ITDService" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ITDService.xsd" MetadataType="Schema" ID="b4e67c65-3fda-4cfd-8421-afa14e0564ec" SourceId="1" SourceUrl="http://geoitddev.geocom.com.uy:8554/v2/ITDService?xsd=xsd1" />
+    <MetadataFile FileName="ITDService1.xsd" MetadataType="Schema" ID="557be220-378b-4faf-8411-5483a6f90ec7" SourceId="1" SourceUrl="http://geoitddev.geocom.com.uy:8554/v2/ITDService?xsd=xsd0" />
+    <MetadataFile FileName="ITDService.disco" MetadataType="Disco" ID="6974e125-867c-4550-be59-306d6b3b1c1a" SourceId="1" SourceUrl="http://geoitddev.geocom.com.uy:8554/v2/ITDService?disco" />
+    <MetadataFile FileName="POSInterfaceService.wsdl" MetadataType="Wsdl" ID="06be2f1e-410a-43fa-a2e7-8e6a5c824123" SourceId="1" SourceUrl="http://geoitddev.geocom.com.uy:8554/v2/ITDService?wsdl" />
+    <MetadataFile FileName="ITDService2.xsd" MetadataType="Schema" ID="b2bb11ab-d133-4d8d-819c-91007090aec6" SourceId="1" SourceUrl="http://geoitddev.geocom.com.uy:8554/v2/ITDService?xsd=xsd3" />
+    <MetadataFile FileName="ITDService3.xsd" MetadataType="Schema" ID="197ccf7b-758f-4253-aa47-8019760465dc" SourceId="1" SourceUrl="http://geoitddev.geocom.com.uy:8554/v2/ITDService?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

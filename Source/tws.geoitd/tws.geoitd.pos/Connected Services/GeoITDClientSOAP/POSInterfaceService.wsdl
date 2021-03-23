@@ -1,0 +1,929 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://geoitd.geocom.com.uy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="POSInterfaceService" targetNamespace="http://geoitd.geocom.com.uy" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_IPOSInterfaceService1_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="CustomBinding_IPOSInterfaceService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256Sha256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:EndorsingSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:RequireThumbprintReference />
+                <sp:WssX509V3Token10 />
+              </wsp:Policy>
+            </sp:X509Token>
+            <sp:SignedParts>
+              <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+            </sp:SignedParts>
+          </wsp:Policy>
+        </sp:EndorsingSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportRefThumbprint />
+          </wsp:Policy>
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://geoitd.geocom.com.uy/Imports">
+      <xsd:import schemaLocation="http://geoitddev.geocom.com.uy:8554/v2/ITDService?xsd=xsd0" namespace="http://geoitd.geocom.com.uy" />
+      <xsd:import schemaLocation="http://geoitddev.geocom.com.uy:8554/v2/ITDService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://geoitddev.geocom.com.uy:8554/v2/ITDService?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://geoitddev.geocom.com.uy:8554/v2/ITDService?xsd=xsd3" namespace="http://schemas.microsoft.com/Message" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchase_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchase" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchase_InputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchase" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processConfirmFinancialPurchase_InputMessage">
+    <wsdl:part name="parameters" element="tns:processConfirmFinancialPurchase" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processConfirmFinancialPurchase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processConfirmFinancialPurchaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialReverse_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialReverse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialReverse_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialReverseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_cancelFinancialPurchase_InputMessage">
+    <wsdl:part name="parameters" element="tns:cancelFinancialPurchase" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_cancelFinancialPurchase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:cancelFinancialPurchaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseVoidByTicket_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseVoidByTicket" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseVoidByTicket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseVoidByTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchaseVoidByTicket_InputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseVoidByTicket" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchaseVoidByTicket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseVoidByTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseRefund_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseRefund" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseRefund_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseRefundResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchaseRefund_InputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseRefund" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processOfflineFinancialPurchaseRefund_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processOfflineFinancialPurchaseRefundResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processFinancialPurchaseQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processFinancialPurchaseQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCardQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processCardQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCardQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processCardQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCloseQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processCloseQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCloseQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processCloseQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_echoTest_InputMessage">
+    <wsdl:part name="parameters" element="tns:echoTest" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_echoTest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:echoTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCurrentTransactionsBatchQuery_InputMessage">
+    <wsdl:part name="parameters" element="tns:processCurrentTransactionsBatchQuery" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processCurrentTransactionsBatchQuery_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processCurrentTransactionsBatchQueryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processQueryLastNClose_InputMessage">
+    <wsdl:part name="parameters" element="tns:processQueryLastNClose" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_processQueryLastNClose_OutputMessage">
+    <wsdl:part name="parameters" element="tns:processQueryLastNCloseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_echoTestTransaction_InputMessage">
+    <wsdl:part name="parameters" element="tns:echoTestTransaction" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_echoTestTransaction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:echoTestTransactionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_printDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:printDocument" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_printDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:printDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLTransactionTicket_InputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLTransactionTicket" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLTransactionTicket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLTransactionTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLTransactionTicketStream_InputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLTransactionTicketStream" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLTransactionTicketStream_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLTransactionTicketStreamResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLCloseBatchTicket_InputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLCloseBatchTicket" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLCloseBatchTicket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLCloseBatchTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLCloseBatchTicketStream_InputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLCloseBatchTicketStream" />
+  </wsdl:message>
+  <wsdl:message name="IPOSInterfaceService_getHTMLCloseBatchTicketStream_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getHTMLCloseBatchTicketStreamResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IPOSInterfaceService">
+    <wsdl:operation name="processFinancialPurchase">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchase" message="tns:IPOSInterfaceService_processFinancialPurchase_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseResponse" message="tns:IPOSInterfaceService_processFinancialPurchase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchase">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchase" message="tns:IPOSInterfaceService_processOfflineFinancialPurchase_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseResponse" message="tns:IPOSInterfaceService_processOfflineFinancialPurchase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processConfirmFinancialPurchase">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchase" message="tns:IPOSInterfaceService_processConfirmFinancialPurchase_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchaseResponse" message="tns:IPOSInterfaceService_processConfirmFinancialPurchase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialReverse">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverse" message="tns:IPOSInterfaceService_processFinancialReverse_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverseResponse" message="tns:IPOSInterfaceService_processFinancialReverse_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelFinancialPurchase">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchase" message="tns:IPOSInterfaceService_cancelFinancialPurchase_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchaseResponse" message="tns:IPOSInterfaceService_cancelFinancialPurchase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseVoidByTicket">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicket" message="tns:IPOSInterfaceService_processFinancialPurchaseVoidByTicket_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicketResponse" message="tns:IPOSInterfaceService_processFinancialPurchaseVoidByTicket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseVoidByTicket">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicket" message="tns:IPOSInterfaceService_processOfflineFinancialPurchaseVoidByTicket_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicketResponse" message="tns:IPOSInterfaceService_processOfflineFinancialPurchaseVoidByTicket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseRefund">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefund" message="tns:IPOSInterfaceService_processFinancialPurchaseRefund_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefundResponse" message="tns:IPOSInterfaceService_processFinancialPurchaseRefund_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseRefund">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefund" message="tns:IPOSInterfaceService_processOfflineFinancialPurchaseRefund_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefundResponse" message="tns:IPOSInterfaceService_processOfflineFinancialPurchaseRefund_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQuery" message="tns:IPOSInterfaceService_processFinancialPurchaseQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQueryResponse" message="tns:IPOSInterfaceService_processFinancialPurchaseQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processCardQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQuery" message="tns:IPOSInterfaceService_processCardQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQueryResponse" message="tns:IPOSInterfaceService_processCardQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQuery" message="tns:IPOSInterfaceService_processQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryResponse" message="tns:IPOSInterfaceService_processQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processCloseQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQuery" message="tns:IPOSInterfaceService_processCloseQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQueryResponse" message="tns:IPOSInterfaceService_processCloseQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="echoTest">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTest" message="tns:IPOSInterfaceService_echoTest_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestResponse" message="tns:IPOSInterfaceService_echoTest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processCurrentTransactionsBatchQuery">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQuery" message="tns:IPOSInterfaceService_processCurrentTransactionsBatchQuery_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQueryResponse" message="tns:IPOSInterfaceService_processCurrentTransactionsBatchQuery_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="processQueryLastNClose">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNClose" message="tns:IPOSInterfaceService_processQueryLastNClose_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNCloseResponse" message="tns:IPOSInterfaceService_processQueryLastNClose_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="echoTestTransaction">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransaction" message="tns:IPOSInterfaceService_echoTestTransaction_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransactionResponse" message="tns:IPOSInterfaceService_echoTestTransaction_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="printDocument">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocument" message="tns:IPOSInterfaceService_printDocument_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocumentResponse" message="tns:IPOSInterfaceService_printDocument_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicket">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicket" message="tns:IPOSInterfaceService_getHTMLTransactionTicket_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketResponse" message="tns:IPOSInterfaceService_getHTMLTransactionTicket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicketStream">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStream" message="tns:IPOSInterfaceService_getHTMLTransactionTicketStream_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStreamResponse" message="tns:IPOSInterfaceService_getHTMLTransactionTicketStream_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicket">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicket" message="tns:IPOSInterfaceService_getHTMLCloseBatchTicket_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketResponse" message="tns:IPOSInterfaceService_getHTMLCloseBatchTicket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicketStream">
+      <wsdl:input wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStream" message="tns:IPOSInterfaceService_getHTMLCloseBatchTicketStream_InputMessage" />
+      <wsdl:output wsaw:Action="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStreamResponse" message="tns:IPOSInterfaceService_getHTMLCloseBatchTicketStream_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IPOSInterfaceService" type="tns:IPOSInterfaceService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="processFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processConfirmFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialReverse">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseVoidByTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseVoidByTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseRefund">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseRefund">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCardQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCloseQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTest">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCurrentTransactionsBatchQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQueryLastNClose">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNClose" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTestTransaction">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransaction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="printDocument">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicketStream">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicketStream">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IPOSInterfaceService1" type="tns:IPOSInterfaceService">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IPOSInterfaceService1_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="processFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processConfirmFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialReverse">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelFinancialPurchase">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseVoidByTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseVoidByTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseRefund">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseRefund">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCardQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCloseQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTest">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCurrentTransactionsBatchQuery">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQueryLastNClose">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNClose" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTestTransaction">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransaction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="printDocument">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicketStream">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicket">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicketStream">
+      <soap:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CustomBinding_IPOSInterfaceService" type="tns:IPOSInterfaceService">
+    <wsp:PolicyReference URI="#CustomBinding_IPOSInterfaceService_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="processFinancialPurchase">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchase">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processConfirmFinancialPurchase">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processConfirmFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialReverse">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialReverse" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelFinancialPurchase">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/cancelFinancialPurchase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseVoidByTicket">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseVoidByTicket">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseVoidByTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseRefund">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processOfflineFinancialPurchaseRefund">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processOfflineFinancialPurchaseRefund" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processFinancialPurchaseQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processFinancialPurchaseQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCardQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCardQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCloseQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCloseQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTest">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processCurrentTransactionsBatchQuery">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processCurrentTransactionsBatchQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="processQueryLastNClose">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/processQueryLastNClose" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoTestTransaction">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/echoTestTransaction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="printDocument">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/printDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicket">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLTransactionTicketStream">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLTransactionTicketStream" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicket">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHTMLCloseBatchTicketStream">
+      <soap12:operation soapAction="http://geoitd.geocom.com.uy/IPOSInterfaceService/getHTMLCloseBatchTicketStream" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="POSInterfaceService">
+    <wsdl:port name="BasicHttpBinding_IPOSInterfaceService" binding="tns:BasicHttpBinding_IPOSInterfaceService">
+      <soap:address location="http://geoitddev.geocom.com.uy:8554/v2/ITDService" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IPOSInterfaceService1" binding="tns:BasicHttpBinding_IPOSInterfaceService1">
+      <soap:address location="https://geoitddev.geocom.com.uy:8556/v2/ITDService/soap" />
+    </wsdl:port>
+    <wsdl:port name="CustomBinding_IPOSInterfaceService" binding="tns:CustomBinding_IPOSInterfaceService">
+      <soap12:address location="https://geoitddev.geocom.com.uy:8556/v2/ITDService/wSign" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://geoitddev.geocom.com.uy:8556/v2/ITDService/wSign</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

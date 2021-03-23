@@ -1,0 +1,595 @@
+{
+	"info": {
+		"_postman_id": "7140f4f6-820d-439a-bf90-26e96a753c07",
+		"name": "Exportar",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "processFinancialPurchase",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"PosID\": \"\",\n\t\"SystemId\": \"\",\n\t\"Branch\": \"Geocom\",\n\t\"ClientAppId\": \"Pruebas\",\n\t\"UserId\": \"Juan\",\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\n\t\"Amount\": \"15000\",\n\t\"Quotas\": 1,\n\t\"Plan\": 0,\n\t\"Currency\": \"858\",\n\t\"TaxRefund\": 1,\n\t\"TaxableAmount\": \"10000\",\n\t\"InvoiceAmount\": \"15000\",\n\t\n\t\"Merchant\": \"1122\",\n\t\"InvoiceNumber\": \"16523\",\n\t\"Bin\": \"\",\n\t\"Issuer\": \"\",\n\t\"NeedToReadCard\": false,\n\t\"PinpadInitQuestion\": \"\",\n\t\"TerminalGroup\": \"\",\n\t\"TipAmount\": \"\",\n\t\"CiNoCheckDigit\": \"\",\n\t\"TransactionTimeout\": 150,\n\t\"TaxAmount\": \"\",\n\t\"CardAccountType\": \"\",\n\t\"DeferredMonths\": \"\",\n\t\"IVAAmount\": \"\",\n\t\"Callback\": \"\",\n\t\"SpecialData\": \"\",\n\t\"CashbackAmount\": \"\"\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processFinancialPurchase",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processFinancialPurchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processOfflineFinancialPurchase",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"PosID\": \"\",\n\t\"SystemId\": \"\",\n\t\"Branch\": \"Geocom\",\n\t\"ClientAppId\": \"Pruebas\",\n\t\"UserId\": \"Juan\",\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\n\t\"Amount\": \"15000\",\n\t\"Quotas\": 1,\n\t\"Plan\": 0,\n\t\"Currency\": \"858\",\n\t\"AuthorizationCode\": \"\",\n\t\"LastNCardDigits\": \"\",\n\t\"TaxRefund\": 1,\n\t\"TaxableAmount\": \"15000\",\n\t\"InvoiceAmount\": \"15000\",\n\t\n\t\"Merchant\": \"1122\",\n\t\"InvoiceNumber\": \"16523\",\n\t\"Bin\": \"\",\n\t\"Issuer\": \"\",\n\t\"NeedToReadCard\": false,\n\t\"PinpadInitQuestion\": \"\",\n\t\"TerminalGroup\": \"\",\n\t\"TipAmount\": \"\",\n\t\"CiNoCheckDigit\": \"\",\n\t\"TransactionTimeOut\": 150,\n\t\"TaxAmount\": \"\",\n\t\"CardAccountType\": \"\",\n\t\"DeferredMonths\": \"\",\n\t\"IVAAmount\": \"\",\n\t\"Callback\": \"\",\n\t\"SpecialData\": \"\",\n\t\"CashbackAmount\": \"\"\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processOfflineFinancialPurchase",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processOfflineFinancialPurchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processConfirmFinancialPurchase",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"PosID\": \"\",\r\n    \"SystemId\": \"\",\r\n    \"Branch\": \"Geocom\",\r\n    \"ClientAppId\": \"Pruebas\",\r\n    \"UserId\": \"Juan\",\r\n    \"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\r\n\t\"TransactionId\": ,\r\n\t\"STransactionId\": \"\",\r\n    \"Amount\": \"15000\",\r\n    \"Quotas\": 1,\r\n    \"Plan\": 0,\r\n    \"Currency\": \"858\",\r\n    \"TaxRefund\": 1,\r\n    \"TaxableAmount\": \"15000\",\r\n    \"InvoiceAmount\": \"15000\",\r\n    \r\n    \"Merchant\": \"1122\",\r\n    \"InvoiceNumber\": \"16523\",\r\n    \"NeedToReadCard\": false,\r\n    \"PinpadInitQuestion\": \"\",\r\n    \"TerminalGroup\": \"\",\r\n    \"TipAmount\": \"\",\r\n    \"CiNoCheckDigit\": \"\",\r\n    \"TransactionTimeOut\": 150,\r\n    \"TaxAmount\": \"\",\r\n    \"CardAccountType\": \"\",\r\n    \"DeferredMonths\": \"\",\r\n    \"IVAAmount\": \"\",\r\n    \"Callback\": \"\",\r\n    \"SpecialData\": \"\",\r\n    \"CashbackAmount\": \"\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processConfirmFinancialPurchase",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processConfirmFinancialPurchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processFinancialReverse",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"PosID\": \"\",\r\n\t\"SystemId\": \"\",\r\n\t\"Branch\": \"Geocom\",\r\n\t\"ClientAppId\": \"Pruebas\",\r\n\t\"UserId\": \"Juan\",\r\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\r\n\t\"TransactionId\": ,\r\n\t\"STransactionId\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processFinancialReverse",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processFinancialReverse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cancelFinancialPurchase",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"PosID\": \"\",\r\n\t\"SystemId\": \"\",\r\n\t\"Branch\": \"Geocom\",\r\n\t\"ClientAppId\": \"Pruebas\",\r\n\t\"UserId\": \"Juan\",\r\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\r\n\t\"TransactionId\": ,\r\n\t\"STransactionId\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/cancelFinancialPurchase",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"cancelFinancialPurchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processFinancialPurchaseVoidByTicket",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"PosID\": \"\",\r\n\t\"SystemId\": \"\",\r\n\t\"Branch\": \"Geocom\",\r\n\t\"ClientAppId\": \"Pruebas\",\r\n\t\"UserId\": \"Juan\",\r\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\r\n\t\"TicketNumber\": \"0001\",\r\n\t\r\n\t\"PinpadInitQuestion\": \"\",\r\n\t\"TerminalGroup\": \"\",\r\n\t\"TransactionTimeOut\": 150,\r\n\t\"Merchant\": \"\",\r\n\t\"Bin\": \"\",\r\n\t\"Issuer\": \"\",\r\n\t\"Acquirer\": \"\",\r\n\t\"Callback\": \"\",\r\n\t\"SpecialData\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processFinancialPurchaseVoidByTicket",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processFinancialPurchaseVoidByTicket"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processOfflineFinancialPurchaseVoidByTicket",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"PosID\": \"\",\r\n\t\"SystemId\": \"\",\r\n\t\"Branch\": \"Geocom\",\r\n\t\"ClientAppId\": \"Pruebas\",\r\n\t\"UserId\": \"Juan\",\r\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\r\n\t\"TicketNumber\": \"0001\",\r\n\t\"AuthorizationCode\": \"\",\r\n\t\"LastNCardDigits\": \"\",\r\n\t\r\n\t\"PinpadInitQuestion\": \"\",\r\n\t\"TerminalGroup\": \"\",\r\n\t\"TransactionTimeOut\": 150,\r\n\t\"Merchant\": \"\",\r\n\t\"Bin\": \"\",\r\n\t\"Issuer\": \"\",\r\n\t\"Acquirer\": \"0001\",\r\n\t\"Callback\": \"\",\r\n\t\"SpecialData\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processOfflineFinancialPurchaseVoidByTicket",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processOfflineFinancialPurchaseVoidByTicket"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processFinancialPurchaseRefund",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"PosID\": \"\",\n\t\"SystemId\": \"\",\n\t\"Branch\": \"Geocom\",\n\t\"ClientAppId\": \"Pruebas\",\n\t\"UserId\": \"Juan\",\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\n\t\"TicketNumber\":\"0019\",\n\t\"OriginalTransactionDateyyMMdd\":\"20160727175029\",\n\t\"Amount\": \"15000\",\n\t\"Quotas\": 1,\n\t\"Plan\": 0,\n\t\"Currency\": \"858\",\n\t\"TaxRefund\": 1,\n\t\"TaxableAmount\": \"15000\",\n\t\"InvoiceAmount\": \"15000\",\n\t\n\t\"Merchant\": \"1122\",\n\t\"InvoiceNumber\": \"16523\",\n\t\"Bin\": \"\",\n\t\"Issuer\": \"\",\n\t\"NeedToReadCard\": false,\n\t\"PinpadInitQuestion\": \"\",\n\t\"TerminalGroup\": \"\",\n\t\"TipAmount\": \"\",\n\t\"CiNoCheckDigit\": \"\",\n\t\"TransactionTimeOut\": 150,\n\t\"TaxAmount\": \"\",\n\t\"CardAccountType\": \"\",\n\t\"DeferredMonths\": \"\",\n\t\"IVAAmount\": \"\",\n\t\"Callback\": \"\",\n\t\"SpecialData\": \"\",\n\t\"CashbackAmount\": \"\"\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processFinancialPurchaseRefund",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processFinancialPurchaseRefund"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processOfflineFinancialPurchaseRefund",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"PosID\": \"\",\n\t\"SystemId\": \"\",\n\t\"Branch\": \"Geocom\",\n\t\"ClientAppId\": \"Pruebas\",\n\t\"UserId\": \"Juan\",\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\n\t\"TicketNumber\":\"0019\",\n\t\"OriginalTransactionDateyyMMdd\":\"20160727175029\",\n\t\"Amount\": \"15000\",\n\t\"Quotas\": 1,\n\t\"Plan\": 0,\n\t\"AuthorizationCode\": \"\",\n\t\"LastNCardDigits\": \"\",\n\t\"Currency\": \"858\",\n\t\"TaxRefund\": 1,\n\t\"TaxableAmount\": \"15000\",\n\t\"InvoiceAmount\": \"15000\",\n\t\n\t\"Merchant\": \"1122\",\n\t\"InvoiceNumber\": \"16523\",\n\t\"Bin\": \"\",\n\t\"Issuer\": \"\",\n\t\"NeedToReadCard\": false,\n\t\"PinpadInitQuestion\": \"\",\n\t\"TerminalGroup\": \"\",\n\t\"TipAmount\": \"\",\n\t\"CiNoCheckDigit\": \"\",\n\t\"TransactionTimeOut\": 150,\n\t\"TaxAmount\": \"\",\n\t\"CardAccountType\": \"\",\n\t\"DeferredMonths\": \"\",\n\t\"IVAAmount\": \"\",\n\t\"Callback\": \"\",\n\t\"SpecialData\": \"\",\n\t\"CashbackAmount\": \"\"\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processOfflineFinancialPurchaseRefund",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processOfflineFinancialPurchaseRefund"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processFinancialPurchaseQuery",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"PosID\": \"\",\r\n\t\"SystemId\": \"\",\r\n\t\"Branch\": \"Geocom\",\r\n\t\"ClientAppId\": \"Pruebas\",\r\n\t\"UserId\": \"Juan\",\r\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\",\r\n\t\"TransactionId\": 1220358138407030982,\r\n\t\"STransactionId\": \"1220358138407030982\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processFinancialPurchaseQuery",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processFinancialPurchaseQuery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processQuery",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"SystemId\": \"\",\r\n\t\"FromDateyyyyMMddHHmmss\": \"20111101000000\",\r\n\t\"ToDateyyyyMMddHHmmss\": \"20181130000000\",\r\n\t\"OnlyConfirmedTransactions\": true,\r\n\t\r\n\t\"PosID\": \"\",\r\n\t\"Branch\": \"1\",\r\n\t\"ClientAppId\": \"1\",\r\n\t\"UserId\": \"1\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processQuery",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processQuery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processCloseQuery",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"PosID\": \"\",\r\n\t\"SystemId\": \"\",\r\n\t\"Branch\": \"1\",\r\n\t\"ClientAppId\": \"1\",\r\n\t\"UserId\": \"1\",\r\n\t\"FromDateyyyyMMddHHmmss\": \"20111101000000\",\r\n\t\"ToDateyyyyMMddHHmmss\": \"20181130000000\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processCloseQuery",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processCloseQuery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processCurrentTransactionsBatchQuery",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"PosID\": \"\",\r\n\t\"SystemId\": \"\",\r\n\t\r\n\t\"Branch\": \"1\",\r\n\t\"ClientAppId\": \"1\",\r\n\t\"UserId\": \"1\",\r\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processCurrentTransactionsBatchQuery",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processCurrentTransactionsBatchQuery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processQueryLastNClose",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"TerminalNum\": \"\",\r\n\t\"SystemId\": \"\",\r\n\t\"LastNCloseReg\": 0,\r\n\t\"FromDateyyyyMMddHHmmss\": \"20111101000000\",\r\n\t\"ToDateyyyyMMddHHmmss\": \"20181130000000\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processQueryLastNClose",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processQueryLastNClose"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "processCardQuery",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"PosID\": \"\",\r\n\t\"SystemId\": \"\",\r\n\t\"Branch\": \"Geocom\",\r\n\t\"ClientAppId\": \"Pruebas\",\r\n\t\"UserId\": \"Juan\",\r\n\t\"TransactionDateTimeyyyyMMddHHmmssSSS\": \"20190927104200000\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/processCardQuery",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"processCardQuery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "echoTest",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/echoTest",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"echoTest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "echoTestTransaction",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"SystemId\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "http://192.168.253.16:8557/v2/ITDService/echoTestTransaction?",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"253",
+						"16"
+					],
+					"port": "8557",
+					"path": [
+						"v2",
+						"ITDService",
+						"echoTestTransaction"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
