@@ -187,22 +187,45 @@ namespace tws.geoitd
             return retVal;
         }
         */
-        public bool PurchaseVoid(PurchaseVoidRequest request_, out PurchaseQueryResponse statusResponse_)
+        //public bool PurchaseVoid(PurchaseVoidRequest request_, out PurchaseQueryResponse statusResponse_)
+        //{
+        //    LOG.Debug("ENTER");
+
+        //    bool retVal = false;
+        //    statusResponse_ = null;
+
+        //    try
+        //    {
+        //        var code = GeoITDOperationCall(
+        //            (out long trId_) =>
+        //            {
+        //                var resp = mPOSClient.processFinancialPurchaseVoidByTicket(request_);
+        //                trId_ = resp.TransactionId;
+        //                return resp.ResponseCode;
+        //            }, request_, out statusResponse_, out retVal);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LOG.Fatal(ex, "{Message}", "Exception caught.");
+        //    }
+        //    finally
+        //    {
+        //        LOG.Debug("EXIT");
+        //    }
+
+        //    return retVal;
+        //}
+        public bool PurchaseVoid(PurchaseVoidRequest request_, out PurchaseVoidResponse response_)
         {
             LOG.Debug("ENTER");
 
             bool retVal = false;
-            statusResponse_ = null;
+            response_ = null;
 
             try
             {
-                var code = GeoITDOperationCall(
-                    (out long trId_) =>
-                    {
-                        var resp = mPOSClient.processFinancialPurchaseVoidByTicket(request_);
-                        trId_ = resp.TransactionId;
-                        return resp.ResponseCode;
-                    }, request_, out statusResponse_, out retVal);
+                response_ = mPOSClient.processFinancialPurchaseVoidByTicket(request_);
+                retVal = (response_.ResponseCode == 0);
             }
             catch (Exception ex)
             {
@@ -216,22 +239,17 @@ namespace tws.geoitd
             return retVal;
         }
 
-        public bool PurchaseRefund(PurchaseRefundRequest request_, out PurchaseQueryResponse statusResponse_)
+        public bool PurchaseRefund(PurchaseRefundRequest request_, out PurchaseRefundResponse response_)
         {
             LOG.Debug("ENTER");
 
             bool retVal = false;
-            statusResponse_ = null;
+            response_ = null;
 
             try
             {
-                var code = GeoITDOperationCall(
-                    (out long trId_) =>
-                    {
-                        var resp = mPOSClient.processFinancialPurchaseRefund(request_);
-                        trId_ = resp.TransactionId;
-                        return resp.ResponseCode;
-                    }, request_, out statusResponse_, out retVal);
+                response_ = mPOSClient.processFinancialPurchaseRefund(request_);
+                retVal = (response_.ResponseCode == 0);
             }
             catch (Exception ex)
             {
@@ -244,6 +262,35 @@ namespace tws.geoitd
 
             return retVal;
         }
+
+        //public bool PurchaseRefund(PurchaseRefundRequest request_, out PurchaseQueryResponse statusResponse_)
+        //{
+        //    LOG.Debug("ENTER");
+
+        //    bool retVal = false;
+        //    statusResponse_ = null;
+
+        //    try
+        //    {
+        //        var code = GeoITDOperationCall(
+        //            (out long trId_) =>
+        //            {
+        //                var resp = mPOSClient.processFinancialPurchaseRefund(request_);
+        //                trId_ = resp.TransactionId;
+        //                return resp.ResponseCode;
+        //            }, request_, out statusResponse_, out retVal);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LOG.Fatal(ex, "{Message}", "Exception caught.");
+        //    }
+        //    finally
+        //    {
+        //        LOG.Debug("EXIT");
+        //    }
+
+        //    return retVal;
+        //}
 
         public bool QueryTransactionStatus(PurchaseQueryRequest request_, out PurchaseQueryResponse statusResponse_, bool waitForStatus_ = true)
         {

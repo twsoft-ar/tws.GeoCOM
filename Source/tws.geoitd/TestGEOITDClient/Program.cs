@@ -82,7 +82,7 @@ namespace TestGEOITDClient
                 InvoiceAmount = pr.InvoiceAmount,
             };
 
-            bVal = client.PurchaseRefund(prr, out purchaseStatus);
+            //bVal = client.PurchaseRefund(prr, out purchaseStatus);
 
             /*
             var response = svc.processFinancialPurchase(pr);

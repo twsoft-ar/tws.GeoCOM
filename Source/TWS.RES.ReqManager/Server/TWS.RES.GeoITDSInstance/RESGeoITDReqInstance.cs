@@ -125,38 +125,34 @@ namespace TWS.RES.GeoCOM
                 //(ConfigMgr.Instance.MercadoPagoAPIURL, ConfigMgr.Instance.MercadoLibreAPIURL, ConfigMgr.Instance.MercadoLibreAPIAccessTOKEN);
 
                 string strAux = "";
-                long transactionId = 0;
-                PurchaseQueryResponse queryResponse;
+                PurchaseVoidResponse response;
 
-                LOG.Info("{Message}", $"Before calling Purchase(), REQUEST:\r\n{jsonBody}");
+                LOG.Info("{Message}", $"Before calling PurchaseVoid(), REQUEST:\r\n{jsonBody}");
 
-                if (geoITDClient.PurchaseVoid(GeoITDPurchaseRequest.ToPurchaseVoidRequest(purchaseRequest), out queryResponse))
+                if (geoITDClient.PurchaseVoid(GeoITDPurchaseRequest.ToPurchaseVoidRequest(purchaseRequest), out response))
                 {
-                    strAux = $"response_code={queryResponse.ResponseCode}|" +
-                             $"pos_response_code={queryResponse.PosResponseCode}|" +
-                             $"pos_response_code_ext={queryResponse.PosResponseCodeExtension}|" +
-                             $"transaction_id={transactionId}|" +
-                             $"ticket={queryResponse.Ticket}|" +
-                             $"authorization_code={queryResponse.AuthorizationCode}|" +
-                             $"issuer={queryResponse.Issuer}|" +
-                             $"card_number={queryResponse.CardNumber}|" +
-                             $"expiration_date={queryResponse.ExpirationDate}|" +
-                             $"transaction_datetime={queryResponse.TransactionDate} {queryResponse.TransactionHour}";
+                    strAux = $"response_code={response.ResponseCode}|" +
+                             $"transaction_id={response.TransactionId}";
                 }
                 else
                 {
-                    strAux = $"response_code={queryResponse.ResponseCode}";
+                    strAux = $"response_code={(response == null? -1 : response.ResponseCode)}";
                 }
 
-                retVal.MessageType = reqMsg_.MessageType;
+                //retVal.MessageType = reqMsg_.MessageType;
                 retVal.Body = ByteStream.ToPByte(strAux);
-                retVal.BodySize = retVal.Body.Length;
-                retVal.Checksum = retVal.GenerateChecksum();
+                //retVal.BodySize = retVal.Body.Length;
+                //retVal.Checksum = retVal.GenerateChecksum();
 
                 LOG.Info("{Message}", $"After calling Purchase(), RESPONSE:\r\n{strAux}");
             }
             catch (Exception ex)
             {
+                //retVal.MessageType = reqMsg_.MessageType;
+                retVal.Body = ByteStream.ToPByte(ex.Message);
+                //retVal.BodySize = retVal.Body.Length;
+                //retVal.Checksum = retVal.GenerateChecksum();
+
                 LOG.Fatal(ex, "{Message}", "Exception caught.");
             }
             finally
@@ -164,8 +160,70 @@ namespace TWS.RES.GeoCOM
                 LOG.Trace("EXIT");
             }
 
+            retVal.MessageType = reqMsg_.MessageType;
+            retVal.BodySize = retVal.Body.Length;
+            retVal.Checksum = retVal.GenerateChecksum();
+
             return retVal;
         }
+
+        //private ReqMessage ProcessGeoITDPruchaseVoid(ReqMessage reqMsg_)
+        //{
+        //    LOG.Trace("ENTER");
+
+        //    ReqMessage retVal = new ReqMessage(null);
+
+        //    try
+        //    {
+        //        string jsonBody = ByteStream.PByteToPrimitive(reqMsg_.Body, 0, typeof(string)).ToString();
+
+        //        GeoITDPurchaseRequest purchaseRequest = GeoITDPurchaseRequest.DeserializeJson(jsonBody);
+
+        //        GeoITDClient geoITDClient = new GeoITDClient();
+        //        //(ConfigMgr.Instance.MercadoPagoAPIURL, ConfigMgr.Instance.MercadoLibreAPIURL, ConfigMgr.Instance.MercadoLibreAPIAccessTOKEN);
+
+        //        string strAux = "";
+        //        long transactionId = 0;
+        //        PurchaseQueryResponse queryResponse;
+
+        //        LOG.Info("{Message}", $"Before calling Purchase(), REQUEST:\r\n{jsonBody}");
+
+        //        if (geoITDClient.PurchaseVoid(GeoITDPurchaseRequest.ToPurchaseVoidRequest(purchaseRequest), out queryResponse))
+        //        {
+        //            strAux = $"response_code={queryResponse.ResponseCode}|" +
+        //                     $"pos_response_code={queryResponse.PosResponseCode}|" +
+        //                     $"pos_response_code_ext={queryResponse.PosResponseCodeExtension}|" +
+        //                     $"transaction_id={transactionId}|" +
+        //                     $"ticket={queryResponse.Ticket}|" +
+        //                     $"authorization_code={queryResponse.AuthorizationCode}|" +
+        //                     $"issuer={queryResponse.Issuer}|" +
+        //                     $"card_number={queryResponse.CardNumber}|" +
+        //                     $"expiration_date={queryResponse.ExpirationDate}|" +
+        //                     $"transaction_datetime={queryResponse.TransactionDate} {queryResponse.TransactionHour}";
+        //        }
+        //        else
+        //        {
+        //            strAux = $"response_code={queryResponse.ResponseCode}";
+        //        }
+
+        //        retVal.MessageType = reqMsg_.MessageType;
+        //        retVal.Body = ByteStream.ToPByte(strAux);
+        //        retVal.BodySize = retVal.Body.Length;
+        //        retVal.Checksum = retVal.GenerateChecksum();
+
+        //        LOG.Info("{Message}", $"After calling Purchase(), RESPONSE:\r\n{strAux}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LOG.Fatal(ex, "{Message}", "Exception caught.");
+        //    }
+        //    finally
+        //    {
+        //        LOG.Trace("EXIT");
+        //    }
+
+        //    return retVal;
+        //}
 
         private ReqMessage ProcessGeoITDPruchaseRefund(ReqMessage reqMsg_)
         {
@@ -183,44 +241,60 @@ namespace TWS.RES.GeoCOM
                 //(ConfigMgr.Instance.MercadoPagoAPIURL, ConfigMgr.Instance.MercadoLibreAPIURL, ConfigMgr.Instance.MercadoLibreAPIAccessTOKEN);
 
                 string strAux = "";
-                long transactionId = 0;
-                PurchaseQueryResponse queryResponse;
+                //long transactionId = 0;
+                PurchaseRefundResponse queryResponse;
 
                 LOG.Info("{Message}", $"Before calling Purchase(), REQUEST:\r\n{jsonBody}");
 
                 if (geoITDClient.PurchaseRefund(GeoITDPurchaseRequest.ToPurchaseRefundRequest(purchaseRequest), out queryResponse))
                 {
                     strAux = $"response_code={queryResponse.ResponseCode}|" +
-                             $"pos_response_code={queryResponse.PosResponseCode}|" +
-                             $"pos_response_code_ext={queryResponse.PosResponseCodeExtension}|" +
-                             $"transaction_id={transactionId}|" +
-                             $"ticket={queryResponse.Ticket}|" +
-                             $"authorization_code={queryResponse.AuthorizationCode}|" +
-                             $"issuer={queryResponse.Issuer}|" +
-                             $"card_number={queryResponse.CardNumber}|" +
-                             $"expiration_date={queryResponse.ExpirationDate}|" +
-                             $"transaction_datetime={queryResponse.TransactionDate} {queryResponse.TransactionHour}";
+                             $"transaction_id={queryResponse.TransactionId}";
                 }
                 else
                 {
-                    strAux = $"response_code={queryResponse.ResponseCode}";
+                    strAux = $"response_code={(queryResponse == null ? -1 : queryResponse.ResponseCode)}";
                 }
 
-                retVal.MessageType = reqMsg_.MessageType;
+                //if (geoITDClient.PurchaseRefund(GeoITDPurchaseRequest.ToPurchaseRefundRequest(purchaseRequest), out queryResponse))
+                //{
+                //    strAux = $"response_code={queryResponse.ResponseCode}|" +
+                //             $"pos_response_code={queryResponse.PosResponseCode}|" +
+                //             $"pos_response_code_ext={queryResponse.PosResponseCodeExtension}|" +
+                //             $"transaction_id={transactionId}|" +
+                //             $"ticket={queryResponse.Ticket}|" +
+                //             $"authorization_code={queryResponse.AuthorizationCode}|" +
+                //             $"issuer={queryResponse.Issuer}|" +
+                //             $"card_number={queryResponse.CardNumber}|" +
+                //             $"expiration_date={queryResponse.ExpirationDate}|" +
+                //             $"transaction_datetime={queryResponse.TransactionDate} {queryResponse.TransactionHour}";
+                //}
+                //else
+                //{
+                //    strAux = $"response_code={queryResponse.ResponseCode}";
+                //}
+
+                //retVal.MessageType = reqMsg_.MessageType;
                 retVal.Body = ByteStream.ToPByte(strAux);
-                retVal.BodySize = retVal.Body.Length;
-                retVal.Checksum = retVal.GenerateChecksum();
+                //retVal.BodySize = retVal.Body.Length;
+                //retVal.Checksum = retVal.GenerateChecksum();
 
                 LOG.Info("{Message}", $"After calling Purchase(), RESPONSE:\r\n{strAux}");
             }
             catch (Exception ex)
             {
+                retVal.Body = ByteStream.ToPByte(ex.Message);
+
                 LOG.Fatal(ex, "{Message}", "Exception caught.");
             }
             finally
             {
                 LOG.Trace("EXIT");
             }
+
+            retVal.MessageType = reqMsg_.MessageType;
+            retVal.BodySize = retVal.Body.Length;
+            retVal.Checksum = retVal.GenerateChecksum();
 
             return retVal;
         }

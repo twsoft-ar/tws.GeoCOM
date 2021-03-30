@@ -35,21 +35,21 @@ TWSRESGEOITDCLIENT_API void Purchase(IN  char* ip_,                 IN  int   po
 		memset(transaction_id_, 0, 20);			//string 20
 
 		strJSON << "{" << "\r\n";
-		strJSON << "\"pos_id\":" << "\"" << pos_id_ << "\",";
-		strJSON << "\"system_id\":" << "\"" << system_id_ << "\",";
-		strJSON << "\"branch\":" << "\"" << branch_ << "\",";
-		strJSON << "\"client_app_id\":" << "\"" << client_app_id_ << "\",";
-		strJSON << "\"user_id\":" << "\"" << user_id_ << "\",";
-		strJSON << "\"transaction_date_time\":" << "\"" << transaction_datetime_ << "\",";
-		strJSON << "\"amount\":" << "\"" << amount_ << "\",";
-		strJSON << "\"installment\":" << installment_ << ",";
-		strJSON << "\"plan\":" <<  plan_ << ",";
-		strJSON << "\"currency\":" << "\"" << currency_ << "\",";
-		strJSON << "\"tax_refund\":" << tax_refund_ << ",";
-		strJSON << "\"taxable_amount\":" << "\"" << taxable_amount_ << "\",";
-		strJSON << "\"invocie_amount\":" << "\"" << invocie_amount_ << "\",";
-		strJSON << "\"tip_amount\":" << "\"" << tip_amount_ << "\",";
-		strJSON << "\"invoice_number\":" << "\"" << invoice_number_ << "\"";
+		strJSON << "\"pos_id\":"				<< "\"" << pos_id_					<< "\",";
+		strJSON << "\"system_id\":"				<< "\"" << system_id_				<< "\",";
+		strJSON << "\"branch\":"				<< "\"" << branch_					<< "\",";
+		strJSON << "\"client_app_id\":"			<< "\"" << client_app_id_			<< "\",";
+		strJSON << "\"user_id\":"				<< "\"" << user_id_					<< "\",";
+		strJSON << "\"transaction_date_time\":" << "\"" << transaction_datetime_	<< "\",";
+		strJSON << "\"amount\":"				<< "\"" << amount_					<< "\",";
+		strJSON << "\"installment\":"					<< installment_				<< ",";
+		strJSON << "\"plan\":"							<< plan_					<< ",";
+		strJSON << "\"currency\":"				<< "\"" << currency_				<< "\",";
+		strJSON << "\"tax_refund\":"					<< tax_refund_				<< ",";
+		strJSON << "\"taxable_amount\":"		<< "\"" << taxable_amount_			<< "\",";
+		strJSON << "\"invocie_amount\":"		<< "\"" << invocie_amount_			<< "\",";
+		strJSON << "\"tip_amount\":"			<< "\"" << tip_amount_				<< "\",";
+		strJSON << "\"invoice_number\":"		<< "\"" << invoice_number_			<< "\"";
 		strJSON << "}" << "\r\n";
 
 		msgChain.Assign((Byte*)(const char*)strJSON, strJSON.Longitud());
@@ -95,13 +95,13 @@ TWSRESGEOITDCLIENT_API void Purchase(IN  char* ip_,                 IN  int   po
 			{
 				strResponse = responseParts[0];
 				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				*res_ = INVALID_MSG;
+				*res_ = EXECUTION_ERROR;
 			}
 			else
 			{
 				strResponse = "BAD RESPONSE FORM [0]";
 				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				*res_ = INVALID_MSG;
+				*res_ = EXECUTION_ERROR;
 			}
 		}
 		else
@@ -159,12 +159,12 @@ TWSRESGEOITDCLIENT_API void PurchaseReverse(IN  char* ip_,                 IN  i
 		memset(transaction_datetime_, 0, 20);	//string 20
 
 		strJSON << "{" << "\r\n";
-		strJSON << "\"pos_id\":" << "\"" << pos_id_ << "\",";
-		strJSON << "\"system_id\":" << "\"" << system_id_ << "\",";
-		strJSON << "\"branch\":" << "\"" << branch_ << "\",";
-		strJSON << "\"client_app_id\":" << "\"" << client_app_id_ << "\",";
-		strJSON << "\"user_id\":" << "\"" << user_id_ << "\",";
-		strJSON << "\"original_transaction_id\":" << "\"" << original_transaction_id_ << "\",";
+		strJSON << "\"pos_id\":"					<< "\"" << pos_id_					<< "\",";
+		strJSON << "\"system_id\":"					<< "\"" << system_id_				<< "\",";
+		strJSON << "\"branch\":"					<< "\"" << branch_					<< "\",";
+		strJSON << "\"client_app_id\":"				<< "\"" << client_app_id_			<< "\",";
+		strJSON << "\"user_id\":"					<< "\"" << user_id_					<< "\",";
+		strJSON << "\"original_transaction_id\":"	<< "\"" << original_transaction_id_ << "\"";
 		strJSON << "}" << "\r\n";
 
 		msgChain.Assign((Byte*)(const char*)strJSON, strJSON.Longitud());
@@ -224,14 +224,218 @@ TWSRESGEOITDCLIENT_API void PurchaseReverse(IN  char* ip_,                 IN  i
 	Logger::LogEvent(LOG_FILE, "Exit from Purchase()", true);
 }
 
+//TWSRESGEOITDCLIENT_API void PurchaseVoid(IN  char* ip_,             IN  int   port_,
+//										 IN  char* pos_id_,         IN  char* system_id_,         IN  char* branch_,
+//										 IN  char* client_app_id_,  IN  char* user_id_,           IN  char* original_ticket_,
+//										 OUT int* response_code_,   OUT char* pos_response_code_, OUT char* pos_response_code_ext_,
+//										 OUT char* transaction_id_, OUT char* ticket_,            OUT char* authorization_code_,
+//										 OUT int* issuer_,          OUT char* card_number_,       OUT char* expiration_date_,
+//										 OUT char* transaction_datetime_,
+//										 OUT char* res_)
+//{
+//	ReqMessage	reqMsg;
+//	ByteStream	msgChain;
+//
+//	lev::string	strJSON;
+//	lev::string strResponse;
+//
+//	try
+//	{
+//		Logger::LogEvent(LOG_FILE, "Enter to Purchase()", true);
+//
+//		memset(pos_response_code_, 0, 10);		//string 10
+//		memset(pos_response_code_ext_, 0, 10);	//string 10
+//		memset(transaction_id_, 0, 20);			//string 20
+//		memset(ticket_, 0, 10);					//string 10
+//		memset(authorization_code_, 0, 10);		//string 10
+//		memset(card_number_, 0, 50);			//string 50
+//		memset(expiration_date_, 0, 20);		//string 20
+//		memset(transaction_datetime_, 0, 20);	//string 20
+//
+//		strJSON << "{" << "\r\n";
+//		strJSON << "\"pos_id\":" << "\"" << pos_id_ << "\",";
+//		strJSON << "\"system_id\":" << "\"" << system_id_ << "\",";
+//		strJSON << "\"branch\":" << "\"" << branch_ << "\",";
+//		strJSON << "\"client_app_id\":" << "\"" << client_app_id_ << "\",";
+//		strJSON << "\"user_id\":" << "\"" << user_id_ << "\",";
+//		strJSON << "\"original_ticket\":" << "\"" << original_ticket_ << "\",";
+//		strJSON << "}" << "\r\n";
+//
+//		msgChain.Assign((Byte*)(const char*)strJSON, strJSON.Longitud());
+//
+//		ReqClient reqClient(ip_, port_, ReqMessage(GEOITD_MSG::PurchaseVoid, msgChain.Length(), (Byte*)msgChain));
+//
+//		if (reqClient.RequestCommand(reqMsg))
+//		{
+//			lev::string str((char*)reqMsg.Body, reqMsg.BodySize);
+//			lev::SafeList<lev::string> responseParts = str.Split('|');
+//
+//			if (responseParts.Size() == 10)
+//			{
+//				lev::SafeList<lev::string> keyVal;
+//
+//				//1. parse response_code
+//				keyVal = responseParts[0].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					*response_code_ = atoi(keyVal[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [response_code]\r\n";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//2. parse pos_response_code 
+//				keyVal = responseParts[1].Split('=');
+//				if (responseParts.Size() == 2)
+//				{
+//					strcpy(pos_response_code_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [pos_response_code]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//3. parse pos_response_code_ext
+//				keyVal = responseParts[2].Split('=');
+//				if (responseParts.Size() == 2)
+//				{
+//					strcpy(pos_response_code_ext_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [pos_response_code_ext]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//4 .parse transaction_id
+//				keyVal = responseParts[3].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(transaction_id_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [transaction_id]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//5. parse ticket
+//				keyVal = responseParts[4].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(ticket_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [ticket]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//6. parse authorization_code
+//				keyVal = responseParts[5].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(authorization_code_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [authorization_code]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//7. parse issuer
+//				keyVal = responseParts[6].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					*issuer_ = atoi(keyVal[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [issuer]\r\n";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//8. parse card_number
+//				keyVal = responseParts[7].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(card_number_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [card_number]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//9. parse expiration_date
+//				keyVal = responseParts[8].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(expiration_date_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [expiration_date]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//10. parse transaction_datetime
+//				keyVal = responseParts[9].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(transaction_datetime_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [transaction_datetime]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//			}
+//			else if (responseParts.Size() == 1)
+//			{
+//				strResponse << responseParts[0] << "|";
+//				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				*res_ = RES_OK;
+//			}
+//			else
+//			{
+//				strResponse << "BAD RESPONSE FORM [0]";
+//				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//			}
+//		}
+//		else
+//			//devuelvo codigo de error		
+//			*res_ = (char)reqMsg.MessageType;
+//	}
+//	catch (const std::exception ex)
+//	{
+//		lev::string strErr = "";
+//		strErr << "In Purchase(), exception caught: " << ex.what();
+//		strResponse = strErr;
+//
+//		Logger::LogEvent(LOG_FILE, strErr, true);
+//		*res_ = 0;
+//	}
+//	catch (...)
+//	{
+//		lev::string strErr = "";
+//		strErr << "In Purchase(), unhandled exception caught";
+//		strResponse = strErr;
+//
+//		Logger::LogEvent(LOG_FILE, strErr, true);
+//		*res_ = 0;
+//	}
+//
+//	Logger::LogEvent(LOG_FILE, "Exit from Purchase()", true);
+//}
+
 TWSRESGEOITDCLIENT_API void PurchaseVoid(IN  char* ip_,             IN  int   port_,
 										 IN  char* pos_id_,         IN  char* system_id_,         IN  char* branch_,
 										 IN  char* client_app_id_,  IN  char* user_id_,           IN  char* original_ticket_,
-										 OUT int* response_code_,   OUT char* pos_response_code_, OUT char* pos_response_code_ext_,
-										 OUT char* transaction_id_, OUT char* ticket_,            OUT char* authorization_code_,
-										 OUT int* issuer_,          OUT char* card_number_,       OUT char* expiration_date_,
-										 OUT char* transaction_datetime_,
-										 OUT char* res_)
+										 OUT int*  response_code_,  OUT char* transaction_id_,    OUT char* res_)
 {
 	ReqMessage	reqMsg;
 	ByteStream	msgChain;
@@ -241,24 +445,17 @@ TWSRESGEOITDCLIENT_API void PurchaseVoid(IN  char* ip_,             IN  int   po
 
 	try
 	{
-		Logger::LogEvent(LOG_FILE, "Enter to Purchase()", true);
+		Logger::LogEvent(LOG_FILE, "Enter to PurchaseVoid()", true);
 
-		memset(pos_response_code_, 0, 10);		//string 10
-		memset(pos_response_code_ext_, 0, 10);	//string 10
 		memset(transaction_id_, 0, 20);			//string 20
-		memset(ticket_, 0, 10);					//string 10
-		memset(authorization_code_, 0, 10);		//string 10
-		memset(card_number_, 0, 50);			//string 50
-		memset(expiration_date_, 0, 20);		//string 20
-		memset(transaction_datetime_, 0, 20);	//string 20
 
 		strJSON << "{" << "\r\n";
-		strJSON << "\"pos_id\":" << "\"" << pos_id_ << "\",";
-		strJSON << "\"system_id\":" << "\"" << system_id_ << "\",";
-		strJSON << "\"branch\":" << "\"" << branch_ << "\",";
-		strJSON << "\"client_app_id\":" << "\"" << client_app_id_ << "\",";
-		strJSON << "\"user_id\":" << "\"" << user_id_ << "\",";
-		strJSON << "\"original_ticket\":" << "\"" << original_ticket_ << "\",";
+		strJSON << "\"pos_id\":"			<< "\"" << pos_id_			<< "\",";
+		strJSON << "\"system_id\":"			<< "\"" << system_id_		<< "\",";
+		strJSON << "\"branch\":"			<< "\"" << branch_			<< "\",";
+		strJSON << "\"client_app_id\":"		<< "\"" << client_app_id_	<< "\",";
+		strJSON << "\"user_id\":"			<< "\"" << user_id_			<< "\",";
+		strJSON << "\"original_ticket\":"	<< "\"" << original_ticket_ << "\"";
 		strJSON << "}" << "\r\n";
 
 		msgChain.Assign((Byte*)(const char*)strJSON, strJSON.Longitud());
@@ -270,7 +467,7 @@ TWSRESGEOITDCLIENT_API void PurchaseVoid(IN  char* ip_,             IN  int   po
 			lev::string str((char*)reqMsg.Body, reqMsg.BodySize);
 			lev::SafeList<lev::string> responseParts = str.Split('|');
 
-			if (responseParts.Size() == 10)
+			if (responseParts.Size() == 2)
 			{
 				lev::SafeList<lev::string> keyVal;
 
@@ -283,127 +480,34 @@ TWSRESGEOITDCLIENT_API void PurchaseVoid(IN  char* ip_,             IN  int   po
 				else
 				{
 					strResponse = "BAD RESPONSE FORM [response_code]\r\n";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+					Logger::LogEvent(LOG_FILE, lev::string() << "In PurchaseVoid(): " << strResponse, true);
 				}
 
-				//2. parse pos_response_code 
+				//2 .parse transaction_id
 				keyVal = responseParts[1].Split('=');
-				if (responseParts.Size() == 2)
-				{
-					strcpy(pos_response_code_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [pos_response_code]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//3. parse pos_response_code_ext
-				keyVal = responseParts[2].Split('=');
-				if (responseParts.Size() == 2)
-				{
-					strcpy(pos_response_code_ext_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [pos_response_code_ext]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//4 .parse transaction_id
-				keyVal = responseParts[3].Split('=');
 				if (keyVal.Size() == 2)
 				{
-					strcpy(transaction_id_, responseParts[1]);
+					strcpy(transaction_id_, keyVal[1]);
 				}
 				else
 				{
 					strResponse = "BAD RESPONSE FORM [transaction_id]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+					Logger::LogEvent(LOG_FILE, lev::string() << "In PurchaseVoid(): " << strResponse, true);
 				}
 
-				//5. parse ticket
-				keyVal = responseParts[4].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(ticket_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [ticket]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//6. parse authorization_code
-				keyVal = responseParts[5].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(authorization_code_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [authorization_code]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//7. parse issuer
-				keyVal = responseParts[6].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					*issuer_ = atoi(keyVal[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [issuer]\r\n";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//8. parse card_number
-				keyVal = responseParts[7].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(card_number_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [card_number]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//9. parse expiration_date
-				keyVal = responseParts[8].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(expiration_date_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [expiration_date]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//10. parse transaction_datetime
-				keyVal = responseParts[9].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(transaction_datetime_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [transaction_datetime]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
+				*res_ = (strResponse.Trim() == "" ? RES_OK : INVALID_MSG);
 			}
 			else if (responseParts.Size() == 1)
 			{
-				strResponse << responseParts[0] << "|";
-				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				*res_ = RES_OK;
+				strResponse = responseParts[0];
+				Logger::LogEvent(LOG_FILE, lev::string() << "In PurchaseVoid(): " << strResponse, true);
+				*res_ = EXECUTION_ERROR;
 			}
 			else
 			{
-				strResponse << "BAD RESPONSE FORM [0]";
-				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+				strResponse = "BAD RESPONSE FORM [0]";
+				Logger::LogEvent(LOG_FILE, lev::string() << "In PurchaseVoid(): " << strResponse, true);
+				*res_ = EXECUTION_ERROR;
 			}
 		}
 		else
@@ -413,7 +517,7 @@ TWSRESGEOITDCLIENT_API void PurchaseVoid(IN  char* ip_,             IN  int   po
 	catch (const std::exception ex)
 	{
 		lev::string strErr = "";
-		strErr << "In Purchase(), exception caught: " << ex.what();
+		strErr << "In PurchaseVoid(), exception caught: " << ex.what();
 		strResponse = strErr;
 
 		Logger::LogEvent(LOG_FILE, strErr, true);
@@ -422,15 +526,234 @@ TWSRESGEOITDCLIENT_API void PurchaseVoid(IN  char* ip_,             IN  int   po
 	catch (...)
 	{
 		lev::string strErr = "";
-		strErr << "In Purchase(), unhandled exception caught";
+		strErr << "In PurchaseVoid(), unhandled exception caught";
 		strResponse = strErr;
 
 		Logger::LogEvent(LOG_FILE, strErr, true);
 		*res_ = 0;
 	}
 
-	Logger::LogEvent(LOG_FILE, "Exit from Purchase()", true);
+	Logger::LogEvent(LOG_FILE, "Exit from PurchaseVoid()", true);
 }
+//TWSRESGEOITDCLIENT_API void PurchaseRefund(IN  char* ip_,                 IN  int   port_,
+// 										   IN  char* pos_id_,             IN  char* system_id_,         IN  char* branch_,
+//										   IN  char* client_app_id_,      IN  char* user_id_,           IN  char* amount_,
+//										   IN  int   installment_,        IN  int   plan_,              IN  char* currency_, 
+//										   IN  int   tax_refund_,         IN  char* taxable_amount_,    IN  char* invocie_amount_,
+//										   IN  char* invoice_number_,     IN  char* original_ticket_,   IN  char* original_transaction_date_,
+//										   OUT int*  response_code_,      OUT char* pos_response_code_, OUT char* pos_response_code_ext_,
+//										   OUT char* transaction_id_,     OUT char* ticket_,            OUT char* authorization_code_,
+//										   OUT int*  issuer_,             OUT char* card_number_,       OUT char* expiration_date_,
+//										   OUT char* transaction_datetime_,
+//										   OUT char* res_)
+//{
+//	ReqMessage	reqMsg;
+//	ByteStream	msgChain;
+//
+//	lev::string	strJSON;
+//	lev::string strResponse;
+//
+//	try
+//	{
+//		Logger::LogEvent(LOG_FILE, "Enter to Purchase()", true);
+//
+//		memset(pos_response_code_, 0, 10);		//string 10
+//		memset(pos_response_code_ext_, 0, 10);	//string 10
+//		memset(transaction_id_, 0, 20);			//string 20
+//		memset(ticket_, 0, 10);					//string 10
+//		memset(authorization_code_, 0, 10);		//string 10
+//		memset(card_number_, 0, 50);			//string 50
+//		memset(expiration_date_, 0, 20);		//string 20
+//		memset(transaction_datetime_, 0, 20);	//string 20
+//
+//		strJSON << "{" << "\r\n";
+//		strJSON << "\"pos_id\":" << "\"" << pos_id_ << "\",";
+//		strJSON << "\"system_id\":" << "\"" << system_id_ << "\",";
+//		strJSON << "\"branch\":" << "\"" << branch_ << "\",";
+//		strJSON << "\"client_app_id\":" << "\"" << client_app_id_ << "\",";
+//		strJSON << "\"user_id\":" << "\"" << user_id_ << "\",";
+//		strJSON << "\"original_ticket\":" << "\"" << original_ticket_ << "\",";
+//		strJSON << "\"original_transaction_date\":" << "\"" << original_transaction_date_ << "\",";
+//		strJSON << "\"amount\":" << "\"" << amount_ << "\",";
+//		strJSON << "\"installment\":" << "\"" << installment_ << "\",";
+//		strJSON << "\"plan\":" << plan_ << ",";
+//		strJSON << "\"currency\":" << "\"" << currency_ << "\",";
+//		strJSON << "\"tax_refund\":" << tax_refund_ << ",";
+//		strJSON << "\"taxable_amount\":" << "\"" << taxable_amount_ << "\",";
+//		strJSON << "\"invocie_amount\":" << "\"" << invocie_amount_ << "\",";
+//		strJSON << "\"invoice_number\":" << "\"" << invoice_number_ << "\",";
+//		strJSON << "}" << "\r\n";
+//
+//		msgChain.Assign((Byte*)(const char*)strJSON, strJSON.Longitud());
+//
+//		ReqClient reqClient(ip_, port_, ReqMessage(GEOITD_MSG::PurchaseRefund, msgChain.Length(), (Byte*)msgChain));
+//
+//		if (reqClient.RequestCommand(reqMsg))
+//		{
+//			lev::string str((char*)reqMsg.Body, reqMsg.BodySize);
+//			lev::SafeList<lev::string> responseParts = str.Split('|');
+//
+//			if (responseParts.Size() == 10)
+//			{
+//				lev::SafeList<lev::string> keyVal;
+//
+//				//1. parse response_code
+//				keyVal = responseParts[0].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					*response_code_ = atoi(keyVal[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [response_code]\r\n";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//2. parse pos_response_code 
+//				keyVal = responseParts[1].Split('=');
+//				if (responseParts.Size() == 2)
+//				{
+//					strcpy(pos_response_code_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [pos_response_code]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//3. parse pos_response_code_ext
+//				keyVal = responseParts[2].Split('=');
+//				if (responseParts.Size() == 2)
+//				{
+//					strcpy(pos_response_code_ext_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [pos_response_code_ext]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//4 .parse transaction_id
+//				keyVal = responseParts[3].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(transaction_id_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [transaction_id]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//5. parse ticket
+//				keyVal = responseParts[4].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(ticket_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [ticket]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//6. parse authorization_code
+//				keyVal = responseParts[5].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(authorization_code_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [authorization_code]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//7. parse issuer
+//				keyVal = responseParts[6].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					*issuer_ = atoi(keyVal[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [issuer]\r\n";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//8. parse card_number
+//				keyVal = responseParts[7].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(card_number_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [card_number]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//9. parse expiration_date
+//				keyVal = responseParts[8].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(expiration_date_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [expiration_date]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//
+//				//10. parse transaction_datetime
+//				keyVal = responseParts[9].Split('=');
+//				if (keyVal.Size() == 2)
+//				{
+//					strcpy(transaction_datetime_, responseParts[1]);
+//				}
+//				else
+//				{
+//					strResponse = "BAD RESPONSE FORM [transaction_datetime]";
+//					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				}
+//			}
+//			else if (responseParts.Size() == 1)
+//			{
+//				strResponse << responseParts[0] << "|";
+//				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//				*res_ = RES_OK;
+//			}
+//			else
+//			{
+//				strResponse << "BAD RESPONSE FORM [0]";
+//				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+//			}
+//		}
+//		else
+//			//devuelvo codigo de error		
+//			*res_ = (char)reqMsg.MessageType;
+//	}
+//	catch (const std::exception ex)
+//	{
+//		lev::string strErr = "";
+//		strErr << "In Purchase(), exception caught: " << ex.what();
+//		strResponse = strErr;
+//
+//		Logger::LogEvent(LOG_FILE, strErr, true);
+//		*res_ = 0;
+//	}
+//	catch (...)
+//	{
+//		lev::string strErr = "";
+//		strErr << "In Purchase(), unhandled exception caught";
+//		strResponse = strErr;
+//
+//		Logger::LogEvent(LOG_FILE, strErr, true);
+//		*res_ = 0;
+//	}
+//
+//	Logger::LogEvent(LOG_FILE, "Exit from Purchase()", true);
+//}
 
 TWSRESGEOITDCLIENT_API void PurchaseRefund(IN  char* ip_,                 IN  int   port_,
  										   IN  char* pos_id_,             IN  char* system_id_,         IN  char* branch_,
@@ -438,11 +761,7 @@ TWSRESGEOITDCLIENT_API void PurchaseRefund(IN  char* ip_,                 IN  in
 										   IN  int   installment_,        IN  int   plan_,              IN  char* currency_, 
 										   IN  int   tax_refund_,         IN  char* taxable_amount_,    IN  char* invocie_amount_,
 										   IN  char* invoice_number_,     IN  char* original_ticket_,   IN  char* original_transaction_date_,
-										   OUT int*  response_code_,      OUT char* pos_response_code_, OUT char* pos_response_code_ext_,
-										   OUT char* transaction_id_,     OUT char* ticket_,            OUT char* authorization_code_,
-										   OUT int*  issuer_,             OUT char* card_number_,       OUT char* expiration_date_,
-										   OUT char* transaction_datetime_,
-										   OUT char* res_)
+										   OUT int*  response_code_,      OUT char* transaction_id_,    OUT char* res_)
 {
 	ReqMessage	reqMsg;
 	ByteStream	msgChain;
@@ -454,31 +773,24 @@ TWSRESGEOITDCLIENT_API void PurchaseRefund(IN  char* ip_,                 IN  in
 	{
 		Logger::LogEvent(LOG_FILE, "Enter to Purchase()", true);
 
-		memset(pos_response_code_, 0, 10);		//string 10
-		memset(pos_response_code_ext_, 0, 10);	//string 10
 		memset(transaction_id_, 0, 20);			//string 20
-		memset(ticket_, 0, 10);					//string 10
-		memset(authorization_code_, 0, 10);		//string 10
-		memset(card_number_, 0, 50);			//string 50
-		memset(expiration_date_, 0, 20);		//string 20
-		memset(transaction_datetime_, 0, 20);	//string 20
 
 		strJSON << "{" << "\r\n";
-		strJSON << "\"pos_id\":" << "\"" << pos_id_ << "\",";
-		strJSON << "\"system_id\":" << "\"" << system_id_ << "\",";
-		strJSON << "\"branch\":" << "\"" << branch_ << "\",";
-		strJSON << "\"client_app_id\":" << "\"" << client_app_id_ << "\",";
-		strJSON << "\"user_id\":" << "\"" << user_id_ << "\",";
-		strJSON << "\"original_ticket\":" << "\"" << original_ticket_ << "\",";
-		strJSON << "\"original_transaction_date\":" << "\"" << original_transaction_date_ << "\",";
-		strJSON << "\"amount\":" << "\"" << amount_ << "\",";
-		strJSON << "\"installment\":" << "\"" << installment_ << "\",";
-		strJSON << "\"plan\":" << plan_ << ",";
-		strJSON << "\"currency\":" << "\"" << currency_ << "\",";
-		strJSON << "\"tax_refund\":" << tax_refund_ << ",";
-		strJSON << "\"taxable_amount\":" << "\"" << taxable_amount_ << "\",";
-		strJSON << "\"invocie_amount\":" << "\"" << invocie_amount_ << "\",";
-		strJSON << "\"invoice_number\":" << "\"" << invoice_number_ << "\",";
+		strJSON << "\"pos_id\":"					<< "\"" << pos_id_						<< "\",";
+		strJSON << "\"system_id\":"					<< "\"" << system_id_					<< "\",";
+		strJSON << "\"branch\":"					<< "\"" << branch_						<< "\",";
+		strJSON << "\"client_app_id\":"				<< "\"" << client_app_id_				<< "\",";
+		strJSON << "\"user_id\":"					<< "\"" << user_id_						<< "\",";
+		strJSON << "\"original_ticket\":"			<< "\"" << original_ticket_				<< "\",";
+		strJSON << "\"original_transaction_date\":" << "\"" << original_transaction_date_	<< "\",";
+		strJSON << "\"amount\":"					<< "\"" << amount_						<< "\",";
+		strJSON << "\"installment\":"						<< installment_					<< ",";
+		strJSON << "\"plan\":"								<< plan_						<< ",";
+		strJSON << "\"currency\":"					<< "\"" << currency_					<< "\",";
+		strJSON << "\"tax_refund\":"						<< tax_refund_					<< ",";
+		strJSON << "\"taxable_amount\":"			<< "\"" << taxable_amount_				<< "\",";
+		strJSON << "\"invocie_amount\":"			<< "\"" << invocie_amount_				<< "\",";
+		strJSON << "\"invoice_number\":"			<< "\"" << invoice_number_				<< "\"";
 		strJSON << "}" << "\r\n";
 
 		msgChain.Assign((Byte*)(const char*)strJSON, strJSON.Longitud());
@@ -490,7 +802,7 @@ TWSRESGEOITDCLIENT_API void PurchaseRefund(IN  char* ip_,                 IN  in
 			lev::string str((char*)reqMsg.Body, reqMsg.BodySize);
 			lev::SafeList<lev::string> responseParts = str.Split('|');
 
-			if (responseParts.Size() == 10)
+			if (responseParts.Size() == 2)
 			{
 				lev::SafeList<lev::string> keyVal;
 
@@ -503,127 +815,34 @@ TWSRESGEOITDCLIENT_API void PurchaseRefund(IN  char* ip_,                 IN  in
 				else
 				{
 					strResponse = "BAD RESPONSE FORM [response_code]\r\n";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+					Logger::LogEvent(LOG_FILE, lev::string() << "In PurchaseRefund(): " << strResponse, true);
 				}
 
-				//2. parse pos_response_code 
+				//2 .parse transaction_id
 				keyVal = responseParts[1].Split('=');
-				if (responseParts.Size() == 2)
-				{
-					strcpy(pos_response_code_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [pos_response_code]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//3. parse pos_response_code_ext
-				keyVal = responseParts[2].Split('=');
-				if (responseParts.Size() == 2)
-				{
-					strcpy(pos_response_code_ext_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [pos_response_code_ext]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//4 .parse transaction_id
-				keyVal = responseParts[3].Split('=');
 				if (keyVal.Size() == 2)
 				{
-					strcpy(transaction_id_, responseParts[1]);
+					strcpy(transaction_id_, keyVal[1]);
 				}
 				else
 				{
 					strResponse = "BAD RESPONSE FORM [transaction_id]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+					Logger::LogEvent(LOG_FILE, lev::string() << "In PurchaseRefund(): " << strResponse, true);
 				}
 
-				//5. parse ticket
-				keyVal = responseParts[4].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(ticket_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [ticket]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//6. parse authorization_code
-				keyVal = responseParts[5].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(authorization_code_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [authorization_code]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//7. parse issuer
-				keyVal = responseParts[6].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					*issuer_ = atoi(keyVal[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [issuer]\r\n";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//8. parse card_number
-				keyVal = responseParts[7].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(card_number_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [card_number]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//9. parse expiration_date
-				keyVal = responseParts[8].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(expiration_date_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [expiration_date]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
-
-				//10. parse transaction_datetime
-				keyVal = responseParts[9].Split('=');
-				if (keyVal.Size() == 2)
-				{
-					strcpy(transaction_datetime_, responseParts[1]);
-				}
-				else
-				{
-					strResponse = "BAD RESPONSE FORM [transaction_datetime]";
-					Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				}
+				*res_ = (strResponse.Trim() == "" ? RES_OK : INVALID_MSG);
 			}
 			else if (responseParts.Size() == 1)
 			{
-				strResponse << responseParts[0] << "|";
-				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
-				*res_ = RES_OK;
+				strResponse = responseParts[0];
+				Logger::LogEvent(LOG_FILE, lev::string() << "In PurchaseRefund(): " << strResponse, true);
+				*res_ = EXECUTION_ERROR;
 			}
 			else
 			{
-				strResponse << "BAD RESPONSE FORM [0]";
-				Logger::LogEvent(LOG_FILE, lev::string() << "In Purchase(): " << strResponse, true);
+				strResponse = "BAD RESPONSE FORM [0]";
+				Logger::LogEvent(LOG_FILE, lev::string() << "In PurchaseRefund(): " << strResponse, true);
+				*res_ = EXECUTION_ERROR;
 			}
 		}
 		else
@@ -633,7 +852,7 @@ TWSRESGEOITDCLIENT_API void PurchaseRefund(IN  char* ip_,                 IN  in
 	catch (const std::exception ex)
 	{
 		lev::string strErr = "";
-		strErr << "In Purchase(), exception caught: " << ex.what();
+		strErr << "In PurchaseRefund(), exception caught: " << ex.what();
 		strResponse = strErr;
 
 		Logger::LogEvent(LOG_FILE, strErr, true);
@@ -642,14 +861,14 @@ TWSRESGEOITDCLIENT_API void PurchaseRefund(IN  char* ip_,                 IN  in
 	catch (...)
 	{
 		lev::string strErr = "";
-		strErr << "In Purchase(), unhandled exception caught";
+		strErr << "In PurchaseRefund(), unhandled exception caught";
 		strResponse = strErr;
 
 		Logger::LogEvent(LOG_FILE, strErr, true);
 		*res_ = 0;
 	}
 
-	Logger::LogEvent(LOG_FILE, "Exit from Purchase()", true);
+	Logger::LogEvent(LOG_FILE, "Exit from PurchaseRefund()", true);
 }
 
 //TWSRESGEOITDCLIENT_API void QueryStatus(IN char* ip_,					IN int   port_,

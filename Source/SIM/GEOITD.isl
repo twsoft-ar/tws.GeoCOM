@@ -142,14 +142,14 @@ Var gblsSystemID 								:A200
 Var gblsBranchID 								:A100
 Var gbliTaxRefund 								:N9
 
+Var gblsOperationType 							:A32
 Var gblcPaymentAmount 							:$12
 Var gblcTaxableAmount 							:$12
-Var gblcInvocieBaseAmount 						:$12
+Var gblcInvoiceAmount 							:$12
 Var gblcInvoiceTaxAmount 						:$12
 Var gbliIsConsumidorFinal		 				:N1
 
 Var gblsRefDataTime 							:A64
-Var gbliCCTenderPresent 						:N1
 
 Var gblsCurrency 								:A16
 Var gbliMPTenderObjNum 							:N9
@@ -221,11 +221,7 @@ Event Init
 EndEvent
 
 Event Final_Tender	
-	
-	If(Not gbliCCTenderPresent And gblsReference <> "")
-		//Call CancelMPQROrder()
-	EndIf
-	
+		
 	Call ClearGobalVars()
 	
 EndEvent
@@ -248,7 +244,7 @@ EndEvent
 //						INQ EVENTS							  //
 ////////////////////////////////////////////////////////////////
 
-Event Inq : 01 //Place Sale Order
+Event Inq : 01 //Payment
 		
 	If(gblsReference = "")
 		Call DoPaymentOrder()
@@ -264,12 +260,25 @@ Event Inq : 02 //Validate Last Payment (if any)
 
 EndEvent
 
-Event Inq : 03 //Cancel Order (if any)
+Event Inq : 03 //Payment Refund
 	
-	Call DoRefundOrder()
+	If(gblsReference = "")
+		Call DoRefundOrder()
+	Else
+		Call ValidatePayment(gblsReference, gblsRefDataTime)
+	EndIf
 	
 EndEvent
  
+Event Inq : 04 //Payment Annulment
+	
+	If(gblsReference = "")
+		Call DoVoidOrder()
+	Else
+		Call ValidatePayment(gblsReference, gblsRefDataTime)
+	EndIf
+	
+EndEvent
 
 Event Inq : 10 //Empresa / Consumidor Final
 	
@@ -305,32 +314,21 @@ Sub ValidatePayment(Ref transactionId_, Ref transactionDateTime_)
 	Var issuer 			:N9
 	Var firstTime 		:N1 = TRUE	
 	
-	//Debug
-	//ErrorMessage "Enter to ValidatePayment [", transactionId_, "]"
-	//ErrorMessage "transactionId_=", transactionId_
-	//Debug
-
 	If(transactionId_ = "")
 		ErrorMessage "No hay transaccion pendiente"
 		Return 
 	EndIf
 
 	initTime = @MINUTE * 60 + @SECOND		
-	While(keepTrying)
-						
+	While(keepTrying)						
 		//Preguntar por Estado de Pago
 		Prompt ""
-		//Call GetPaymentStatus(transactionId_, transactionDateTime_, issuer, paymentStatus, bOK)
 		Call GetPaymentStatus(transactionId_, transactionDateTime_, paymentStatus, bOK)
-		
-		//Debug
-		//ErrorMessage "paymentStatus=", paymentStatus, " bOK=", bOK
-		//Debug
-			
+					
 		If(paymentStatus = STATUS_APPROVED)
 
-			InfoMessage "Pago Aprobado !!"
-			
+			InfoMessage "Operacion APROBADA !!"
+						
 			Var lawDiscountAmount 	:A16 = "0"
 			Var plan             	:A16 = "0"
 			Var installment       	:A16 = "1"
@@ -342,9 +340,7 @@ Sub ValidatePayment(Ref transactionId_, Ref transactionDateTime_)
 			Var cardName 			:A64
 			Var tipAmount 			:$12 = @CHGTIP
 			Var invoiceNumber 		:A16 = @CKNUM
-			
-			Call GetTenderObjNumber(gbliIssuer, objNum, cardName, cardType)
-												
+															
 			If(gblsInputMode = "B")
 				inputMode = "BANDA"
 			ElseIf(gblsInputMode = "M")
@@ -355,24 +351,40 @@ Sub ValidatePayment(Ref transactionId_, Ref transactionDateTime_)
 				inputMode = "CONTACTLESS"
 			EndIf
 																	
+			Call GetTenderObjNumber(gbliIssuer, objNum, cardName, cardType)
+
 			Call PrintVoucher(	gblsTransDate, 				gblsTransTime, 			cardType,				cardName, 			\
 								gblsStoreName, 				gblsMerchant, 			gblsStoreAddress, 		gblsStoreRUT, 		\
 								gblsPinpadID, 				gblsBatch, 				gblsTicketNumber, 		gblsCardNumber,		\
 								gblsExpirationDate, 		inputMode, 				gblsEMVAppName, 		gblsEMVAppId,		\								
-								gblsOriginalTicketNumber,	gblsOriginalTicketDate,	gblcPaymentAmount, 		lawDiscountAmount, 	\
+								gblsOriginalTicketNumber,	gblsOriginalTicketDate,	gblcInvoiceAmount, 		lawDiscountAmount, 	\
 								tipAmount,					plan, 			 		installment,			lawDisountText, 	\
 								invoiceNumber,				lawNumber, 				gblcPaymentAmount, 		gblcTaxableAmount, 	\
-								gblsCardOwnerName, 			gblsAuthorizationCode, 												\
+								gblsCardOwnerName, 			gblsAuthorizationCode, 	gblsOperationType, 							\
 				                FALSE)												
-																			
-			If(gbliTenderRefReq)
-				LoadKybdMacro MakeKeys(gblcPaymentAmount), Key(KEY_TYPE_TENDER_OBJNUM, objNum), MakeKeys(transactionId_), @KEY_ENTER
-			Else
-				LoadKybdMacro MakeKeys(gblcPaymentAmount), Key(KEY_TYPE_TENDER_OBJNUM, objNum), @KEY_ENTER
-			EndIf
-			gbliCCTenderPresent = TRUE
+																									
+			Call PrintVoucher(	gblsTransDate, 				gblsTransTime, 			cardType,				cardName, 			\
+								gblsStoreName, 				gblsMerchant, 			gblsStoreAddress, 		gblsStoreRUT, 		\
+								gblsPinpadID, 				gblsBatch, 				gblsTicketNumber, 		gblsCardNumber,		\
+								gblsExpirationDate, 		inputMode, 				gblsEMVAppName, 		gblsEMVAppId,		\								
+								gblsOriginalTicketNumber,	gblsOriginalTicketDate,	gblcInvoiceAmount, 		lawDiscountAmount, 	\
+								tipAmount,					plan, 			 		installment,			lawDisountText, 	\
+								invoiceNumber,				lawNumber, 				gblcPaymentAmount, 		gblcTaxableAmount, 	\
+								gblsCardOwnerName, 			gblsAuthorizationCode, 	gblsOperationType, 							\
+				                TRUE)												
+
+			If(gblcPaymentAmount <> 0)
+				If(gbliTenderRefReq)
+					LoadKybdMacro MakeKeys(gblcPaymentAmount), Key(KEY_TYPE_TENDER_OBJNUM, objNum), MakeKeys(transactionId_), @KEY_ENTER
+				Else
+					LoadKybdMacro MakeKeys(gblcPaymentAmount), Key(KEY_TYPE_TENDER_OBJNUM, objNum), @KEY_ENTER
+				EndIf	
 			
-			Return
+			Else
+				InfoMessage "Recuerde hacer la Nota de Credito"
+			EndIf
+						
+			keepTrying = FALSE
 			
 		ElseIf(paymentStatus = STATUS_WAITING_FOR_CARD)
 			If(firstTime)
@@ -384,7 +396,8 @@ Sub ValidatePayment(Ref transactionId_, Ref transactionDateTime_)
 			Prompt "ESPERANDO RESPUESTA DEL POS..."
 		Else
 			gblsReference = ""
-			ErrorMessage "Error, pago no procesado"
+			ErrorMessage "Error, operacion no procesada"
+			Call ClearGobalVars()
 			ExitCancel
 		EndIf
 					
@@ -401,13 +414,17 @@ Sub ValidatePayment(Ref transactionId_, Ref transactionDateTime_)
 								
 		EndIf
 		
-		keepTrying = (bOK) And (Not timeOut) 
+		keepTrying = keepTrying And (bOK) And (Not timeOut) 
 	
 		MSleep(1000)  
 		elapsedTime = (@MINUTE * 60 + @SECOND) - initTime 
 		
 	EndWhile
-	
+
+	If(@CKNUM = 0) //if we do not came from an open check
+		Call ClearGobalVars()
+	EndIf
+
 EndSub
 
 //******************************************************************
@@ -419,8 +436,8 @@ Sub PrintVoucher(	Ref date_, 				Ref time_, 				Ref cardType_, 			Ref	cardName_,
 					Ref cardExpDate_, 		Ref inputMode_, 		Ref emvAppName_, 		Ref emvAppId_,			\
 					Ref originalTkt_,		Ref originalTktDate_, 	Ref invoiceAmount_, 	Ref lawDiscountAmount_, \
 					Ref tipAmount_,			Ref plan_, 				Ref installment_,		Ref lawDisountText_, 	\
-					Ref invoiceNumber_,		Ref lawNumber_, 		Ref totalAmount_, 		Ref burdenAmount_, 		\
-					Ref cardHolder_, 		Ref authorizationCode_, 												\
+					Ref invoiceNumber_,		Ref lawNumber_, 		Ref paymentAmount_, 	Ref burdenAmount_, 		\
+					Ref cardHolder_, 		Ref authorizationCode_, Ref opType_, 									\
 	                Var copy_ :N1)
 
 	Var prtLine 	:A256
@@ -433,8 +450,9 @@ Sub PrintVoucher(	Ref date_, 				Ref time_, 				Ref cardType_, 			Ref	cardName_,
 
 		Format fieldLeft  As date_
 		Format fieldRight As time_
-		Format prtLine As fieldLeft{<20}, fieldRight {>20} 
+		Format prtLine As fieldLeft{<10}, opType_{=20} ,fieldRight {>10} 
 		PrintLine prtLine 
+		PrintLine "" 
 		
 		Format fieldLeft As cardName_ 
 		Format prtLine As fieldLeft{=40} 
@@ -453,6 +471,7 @@ Sub PrintVoucher(	Ref date_, 				Ref time_, 				Ref cardType_, 			Ref	cardName_,
 		Format fieldLeft As "RUT ", storeRUT_
 		Format prtLine As fieldLeft{=40} 
 		PrintLine prtLine 
+		PrintLine "" 
 		
 		Format fieldLeft As "COMERCIO: ", storeID_
 		Format fieldRight As "TERM: ", terminal_
@@ -475,13 +494,13 @@ Sub PrintVoucher(	Ref date_, 				Ref time_, 				Ref cardType_, 			Ref	cardName_,
 		PrintLine prtLine 
 	
 		If(originalTkt_ <> "")
-			Format fieldLeft As "TKT ORIG:", originalTkt_
+			Format fieldLeft As "TICKET ORIG:", originalTkt_
 			Format fieldRight As "FECHA ORIG:", originalTktDate_
 			Format prtLine As fieldLeft{<20}, fieldRight {>20} 
 			PrintLine prtLine 		
 		EndIf
-		
-		If(invoiceAmount_ <> gblcPaymentAmount)
+				
+		If(invoiceAmount_ <> paymentAmount_)
 			Format fieldLeft As "IMPORTE"
 			Format fieldRight As invoiceAmount_ 
 			Format prtLine As fieldLeft{<28}, fieldRight {>12} 
@@ -503,7 +522,7 @@ Sub PrintVoucher(	Ref date_, 				Ref time_, 				Ref cardType_, 			Ref	cardName_,
 		EndIf
 
 		Format fieldLeft As "TOTAL"
-		Format fieldRight As gblcPaymentAmount - lawDiscountAmount_ + tipAmount_ 
+		Format fieldRight As paymentAmount_- lawDiscountAmount_ + tipAmount_ 
 		Format prtLine As fieldLeft{<28}, fieldRight {>12} 
 		PrintLine prtLine 
 
@@ -586,21 +605,18 @@ Sub DoPaymentOrder()
 	Var strTaxable100 	:A16
 	Var strTipAmount100 :A16
 	
-
 	Call LoadPaymentDrv()
 		
 	If(gblPaymentDrv <> 0)
 						
-		Call LogInfo(ERROR_LOG_FILE_NAME, "Before calling SaleOrder", TRUE, TRUE)	
+		Call LogInfo(ERROR_LOG_FILE_NAME, "Before calling DoPaymentOrder", TRUE, TRUE)	
+		
+		gblcInvoiceAmount = invoiceTotal
 		
 		Input paymentAmount, "Ingrese Monto a Pagar"
 		
 		amount = paymentAmount
-		
-		//Debug
-		//ErrorMessage "amount = ", amount, " TOTALDUE = ", @TTLDUE 
-		//Debug 
-		
+				
 		If(@INPUTSTATUS = 0 Or amount = 0)
 			InfoMessage "Operacion cancelada"
 			Return
@@ -632,24 +648,6 @@ Sub DoPaymentOrder()
 			
 		Format invoiceDT As (@YEAR + 2000){04}, @MONTH{02}, @DAY{02}, @HOUR{02}, @MINUTE{02}, @SECOND{02}, "000"
 		
-	
-		//Debug
-//		gblsPinpadID = "43113460"
-//		gblsSystemID = "F3D5877B-3C08-488C-BE97-907444042490"
-//		gblsBranchID = "TWS LOCAL 1"
-//		WSIDStr = "WS 001"
-//		userId = "LUIS"
-//		strAmount = "12200"
-//		intallment = 1
-//		plan = 0
-//		currency = "858"
-//		taxRefund = 0
-//		strTaxable100 = "10000"
-//		strInvTotal100 = "12200"
-//		tipAmount = "0"
-//		invoiceDT = "20210319170000000"
-		//Debug
-	
 		DLLCall_CDecl gblPaymentDrv, Purchase(	gblsServerIP, 		gbliServerPort, 					\		
 												gblsPinpadID,		gblsSystemID,		gblsBranchID,	\
 												WSIDStr, 			userId, 			strAmount, 		\ 			
@@ -680,9 +678,8 @@ Sub DoPaymentOrder()
 
 			gblsReference = transactionID
 			gblsRefDataTime = invoiceDT
-			//debug
-			//ErrorMessage "transactionID:", transactionID
-			//debug
+			gblsOperationType = "COMPRA"
+
 			Call ValidatePayment(gblsReference, gblsRefDataTime)
 			
 		Else		
@@ -708,11 +705,11 @@ Sub DoRefundOrder()
 	Var intallment 		:N9 = 1
 	Var plan 			:N9 = 0
 	Var currency  		:A8 = "858"
-	Var invoiceTotal 	:$12 = (@TTLDUE + @PREVPAY)
+	Var invoiceTotal 	:$12 = Abs(@TTLDUE + @PREVPAY)
 	Var taxRefund 		:N9 = 0
 	Var taxableAmount 	:$12
 	Var taxTtlDummy 	:$12
-	Var tipAmount 		:$12 = @CHGTIP
+	Var tipAmount 		:$12 = Abs(@CHGTIP)
 	Var invoiceNumber 	:A16 = @CKNUM
 	Var invoiceDT 		:A64 = ""
 	Var transactionID 	:A32
@@ -728,17 +725,28 @@ Sub DoRefundOrder()
 	Var strInvTotal100 	:A16
 	Var strTaxable100 	:A16
 	Var strTipAmount100 :A16
-	Var originalDT 		:A64 = ""
+	Var originalTktDate :A64 = ""
+	Var originalTktNum 	:A16 = ""
+
+	If(@CKNUM = 0 Or @TTLDUE = 0)
+		ErrorMessage "Operacion no valida si la cuenta es cero"
+		Return
+	EndIf
 
 	Call LoadPaymentDrv()
 		
 	If(gblPaymentDrv <> 0)
 						
-		Call LogInfo(ERROR_LOG_FILE_NAME, "Before calling SaleOrder", TRUE, TRUE)	
+		Call LogInfo(ERROR_LOG_FILE_NAME, "Before calling DoRefundOrder", TRUE, TRUE)	
 		
-		Input originalDT, "Ingrese Nro. Ticket trans. original"
-		Input originalDT, "Ingrese Fecha de trans. orig. (ddmmyy)"
-		Input paymentAmount, "Ingrese Monto a Devolver"
+		gblcInvoiceAmount = invoiceTotal
+
+		Input originalTktNum, 	"Ingrese Nro. Ticket original"
+		Input originalTktDate, 	"Ingrese Fecha de Ticket orig. (ddmmyy)"
+		Input paymentAmount, 	"Ingrese Monto a Devolver"
+		
+		gblsOriginalTicketNumber = originalTktNum
+		gblsOriginalTicketDate = originalTktDate		
 		
 		amount = paymentAmount
 		
@@ -746,12 +754,12 @@ Sub DoRefundOrder()
 			InfoMessage "Operacion cancelada"
 			Return
 		Else
-			If(amount > @TTLDUE)
-				amount = @TTLDUE
+			If(Abs(amount) > Abs(@TTLDUE))
+				amount = Abs(@TTLDUE)
 			EndIf
 		EndIf
 
-		gblcPaymentAmount = Abs(amount)
+		gblcPaymentAmount = amount
 
 		If(gbliIsConsumidorFinal)
 			taxRefund = gbliTaxRefund
@@ -761,79 +769,131 @@ Sub DoRefundOrder()
 	
 		gblcTaxableAmount = Abs(taxableAmount * amount / invoiceTotal)
 	
-		intAmount100    = Abs(amount * 100)
-		intInvTotal100  = Abs(invoiceTotal * 100)
-		intTaxable100   = Abs(gblcTaxableAmount * 100)
-		intTipAmount100 = Abs(tipAmount * 100)
-		
+		intAmount100    = amount * 100
+		intInvTotal100  = invoiceTotal * 100
+		intTaxable100   = gblcTaxableAmount * 100
+		intTipAmount100 = tipAmount * 100
+
 		Format strAmount   		As intAmount100
 		Format strInvTotal100 	As intInvTotal100
 		Format strTaxable100 	As intTaxable100
 		Format strTipAmount100 	As intTipAmount100 
-			
+
 		Format invoiceDT As (@YEAR + 2000){04}, @MONTH{02}, @DAY{02}, @HOUR{02}, @MINUTE{02}, @SECOND{02}, "000"
-		
-	
-		//Debug
-//		gblsPinpadID = "43113460"
-//		gblsSystemID = "F3D5877B-3C08-488C-BE97-907444042490"
-//		gblsBranchID = "TWS LOCAL 1"
-//		WSIDStr = "WS 001"
-//		userId = "LUIS"
-//		strAmount = "12200"
-//		intallment = 1
-//		plan = 0
-//		currency = "858"
-//		taxRefund = 0
-//		strTaxable100 = "10000"
-//		strInvTotal100 = "12200"
-//		tipAmount = "0"
-//		invoiceDT = "20210319170000000"
-		//Debug
-	
-		DLLCall_CDecl gblPaymentDrv, PurchaseRefund(gblsServerIP, 		gbliServerPort, 					\		
-													gblsPinpadID,		gblsSystemID,		gblsBranchID,	\
-													WSIDStr, 			userId, 			strAmount, 		\ 			
-													intallment,			plan, 				currency, 		\
-													taxRefund, 			strTaxable100, 		strInvTotal100, \
-													invoiceNumber, 		invoiceDT, 		\
+
+		DLLCall_CDecl gblPaymentDrv, PurchaseRefund(gblsServerIP, 		gbliServerPort, 						\
+													gblsPinpadID,		gblsSystemID,		gblsBranchID,		\
+													WSIDStr, 			userId, 			strAmount, 			\
+													intallment,			plan, 				currency, 			\
+													taxRefund, 			strTaxable100, 		strInvTotal100, 	\
+													invoiceNumber, 		originalTktNum, 	originalTktDate, 	\
 													Ref responseCode, 	Ref transactionID, 	Ref errorCode) 
-		
-		//Debug
-		//ErrorMessage "respCode:", responseCode, " errCode:", errorCode, " tranID:", transactionID
-		//Debug
-		
-		Call LogInfo(ERROR_LOG_FILE_NAME, "After calling Purchase", TRUE, TRUE)	
+
+		Call LogInfo(ERROR_LOG_FILE_NAME, "After calling DoRefundOrder", TRUE, TRUE)	
 		If(errorCode = EXECUTION_OK)
 
 			//look for Error 
 			If(responseCode <> 0 Or errorCode <> EXECUTION_OK)
 				
-				ErrorMessage "No se puede procesar el pago."
+				ErrorMessage "No se puede procesar la devolucion."
 				
-				Call LogInfo(ERROR_LOG_FILE_NAME, "Call to Purchase() returned GEOITD Error:", TRUE, TRUE)
+				Call LogInfo(ERROR_LOG_FILE_NAME, "Call to PurchaseRefund() returned GEOITD Error:", TRUE, TRUE)
 				Call LogInfo(ERROR_LOG_FILE_NAME, clientDataRes, TRUE, TRUE)
 				Return
 			EndIf
-					
-			//Success								
-			Prompt "Solicitud de pago enviada."
+
+			//Success
+			Prompt "Solicitud de devolucion enviada."
 
 			gblsReference = transactionID
 			gblsRefDataTime = invoiceDT
-			//debug
-			//ErrorMessage "transactionID:", transactionID
-			//debug
+			gblsOperationType = "DEVOLUCION"
+
 			Call ValidatePayment(gblsReference, gblsRefDataTime)
 			
-		Else		
+		Else
 			Call ShowErrorMessage(errorCode, "", "")
 		EndIf
 
 		Call FreePaymentDrv()
-												 		
+
 	EndIf
+
+EndSub
+
+//******************************************************************
+// Procedure: DoVoidOrder()
+//******************************************************************
+Sub DoVoidOrder()
+
+	Var posId 			:A64
+	Var WSIDStr 		:A16 = @WSID
+	Var userId 			:A32 = @TREMP
+	Var invoiceNumber 	:A16 = @CKNUM
+	Var invoiceDT 		:A64 = ""
+	Var transactionID 	:A32
+	Var responseCode 	:N9
+	Var errorCode       :N9
+	Var geoITDError 	:A1024
+	Var strAux 			:A1024 			
+	Var originalTktNum 	:A16 = ""
+	Var amount 			:$12
+
+	Call LoadPaymentDrv()
 		
+	If(gblPaymentDrv <> 0)
+						
+		Call LogInfo(ERROR_LOG_FILE_NAME, "Before calling DoVoidOrder", TRUE, TRUE)	
+		
+		Input originalTktNum, "Ingrese Nro. Ticket original"
+
+		If(@CKNUM <> 0 And @TTLDUE <> 0)
+			Input amount, "Ingrese monto pagado"	
+			gblcPaymentAmount = amount
+		EndIf		
+						
+		If(@INPUTSTATUS = 0 Or Trim(originalTktNum) = "")
+			InfoMessage "Operacion cancelada"
+			Return
+		EndIf
+
+		gblsOriginalTicketNumber = originalTktNum
+			
+		DLLCall_CDecl gblPaymentDrv, PurchaseVoid(	gblsServerIP, 		gbliServerPort, 						\
+													gblsPinpadID,		gblsSystemID,		gblsBranchID,		\
+													WSIDStr, 			userId, 			originalTktNum, 	\
+													Ref responseCode, 	Ref transactionID, 	Ref errorCode) 
+														
+		Call LogInfo(ERROR_LOG_FILE_NAME, "After calling DoVoidOrder", TRUE, TRUE)	
+		If(errorCode = EXECUTION_OK)
+
+			//look for Error 
+			If(responseCode <> 0 Or errorCode <> EXECUTION_OK)
+				
+				ErrorMessage "No se puede procesar la anulacion."
+				
+				Call LogInfo(ERROR_LOG_FILE_NAME, "Call to PurchaseVoid() returned GEOITD Error:", TRUE, TRUE)
+				Call LogInfo(ERROR_LOG_FILE_NAME, clientDataRes, TRUE, TRUE)
+				Return
+			EndIf
+
+			//Success
+			Prompt "Solicitud de anulacion enviada."
+
+			gblsReference = transactionID
+			gblsRefDataTime = invoiceDT
+			gblsOperationType = "ANULACION"
+
+			Call ValidatePayment(gblsReference, gblsRefDataTime)
+			
+		Else
+			Call ShowErrorMessage(errorCode, "", "")
+		EndIf
+
+		Call FreePaymentDrv()
+
+	EndIf
+
 EndSub
 
 //******************************************************************
@@ -875,11 +935,7 @@ Sub GetPaymentStatus(Ref transactionId_, Ref transDateTime_, Ref status_, Ref re
 												Ref queryResponse, 			Ref errorCode)
 																																				
 		Call LogInfo(ERROR_LOG_FILE_NAME, "After calling QueryStatus", TRUE, TRUE)																	
-		
-		//Debug
-		Call LogInfo(ERROR_LOG_FILE_NAME, queryResponse, TRUE, TRUE)																	
-		//Debug
-													
+
 		If(errorCode = EXECUTION_OK)
 			If(gbliResponseCode = RESPONSE_WAITING_CARD)
 				status_ = STATUS_WAITING_FOR_CARD
@@ -899,8 +955,8 @@ Sub GetPaymentStatus(Ref transactionId_, Ref transDateTime_, Ref status_, Ref re
 				Call LogInfo(ERROR_LOG_FILE_NAME, gblsPosResponseCode, TRUE, TRUE)																	
 				Call LogInfo(ERROR_LOG_FILE_NAME, gblsPosResponseCodeExt, TRUE, TRUE)																	
 				status_ = STATUS_ERROR
-			EndIf			
-				
+			EndIf
+
 			Split @VERSION, ".", gbliRESMajVer, gbliRESMinVer
 
             Split queryResponse, "|", 	gblsTicketNumber, 		\
@@ -919,15 +975,16 @@ Sub GetPaymentStatus(Ref transactionId_, Ref transDateTime_, Ref status_, Ref re
             							gblsMerchant, 			\
             							gblsInputMode, 			\
             							gblsCardOwnerName
-            							 
+
 			retVal_ = (status_ <> STATUS_ERROR)
 		Else		
 			status_ = STATUS_ERROR
 			Call ShowErrorMessage(errorCode, gblsPosResponseCode, gblsPosResponseCodeExt)
+			Call LogInfo(ERROR_LOG_FILE_NAME, queryResponse, TRUE, TRUE)																	
 		EndIf
-												 		
+
 	EndIf
-	
+
 EndSub
 
 //******************************************************************
@@ -984,6 +1041,7 @@ Sub ClearGobalVars()
 	gblsReference            	= ""
 	gblsRefDataTime         	= ""
 	gbliIsConsumidorFinal    	= TRUE
+	gblsOperationType 			= ""
 	gblcPaymentAmount			= 0
 	gblcTaxableAmount 			= 0
 	gblsTransDate	        	= ""
@@ -1430,6 +1488,7 @@ Sub ShowErrorMessage(Var errorCode_ :N9,  Var posErrorCode_ :A16, Var posErrorCo
 	
 	If(errorCode_ <> EXECUTION_OK)
 		Format sTmp As "Error Code = ", errorCode_
+		ErrorMessage sTmp 
 		Call LogInfo(ERROR_LOG_FILE_NAME, sTmp, TRUE, TRUE)	
 	EndIf
 		
