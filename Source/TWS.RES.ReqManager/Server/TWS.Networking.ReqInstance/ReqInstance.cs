@@ -12,6 +12,8 @@ namespace TWS.Networking
 {
     public class ReqInstance
     {
+        private static readonly NLog.Logger LOG = NLog.LogManager.GetCurrentClassLogger();
+
         private Socket mSocket;
 
         public ReqInstance(Socket socket_)
@@ -26,33 +28,24 @@ namespace TWS.Networking
 
             try
             {
-
                 if (requestMsg.MessageType != MSG_DEF.INVALID_MSG)
                 {
                     responseMsg = ProcessIncomingRequest(requestMsg);
 
                     if (!SendResponse(responseMsg))
                     {
-                        #if(WindowsCE == false)
-                        LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", "In StartProcess() error sending response message", VERBOSITY_LEVEL.FATAL);
-                        #else
-                        LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", "In StartProcess() error sending response message", VERBOSITY_LEVEL.FATAL);
-                        #endif
+                        LOG.Info("{Message}", $"Error sending response message");
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                #if (WindowsCE == false)
-                LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", "In StartProcess() Exception thrown: " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                #else
-                LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", "In StartProcess() Exception thrown: " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                #endif
+                LOG.Fatal(ex, "{Message}", "Exception caught.");
             }
             finally
             {
                 mSocket.Close();
+                LOG.Trace("EXIT");
             }
         }
 
@@ -98,29 +91,12 @@ namespace TWS.Networking
 
                 }
                 catch (SocketException se)
-                {                    
-                    #if(WindowsCE == false)
-                    if (se.ErrorCode != (int)SocketError.WouldBlock)
-                    {
-                        LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", "In WaitForRequest(), SocketException thrown: " + se.Message, VERBOSITY_LEVEL.FATAL);
-                        break;
-                    }
-                    #else
-                    if (se.ErrorCode != (int)10035)
-                    {
-                        LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", "In WaitForRequest(), SocketException thrown: " + se.Message, VERBOSITY_LEVEL.FATAL);
-                        break;
-                    }
-                    #endif
+                {
+                    LOG.Fatal(se, "{Message}", "SocketException caught.");
                 }
                 catch (ObjectDisposedException ode)
                 {
-                    #if (WindowsCE == false)
-                    LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", "In WaitForRequest(), ObjectDisposedException thrown: " + ode.Message, VERBOSITY_LEVEL.FATAL);
-                    #else
-                    LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", "In WaitForRequest(), ObjectDisposedException thrown: " + ode.Message, VERBOSITY_LEVEL.FATAL);
-                    #endif
-
+                    LOG.Fatal(ode, "{Message}", "ObjectDisposedException caught.");
                     break;
                 }
 
@@ -162,27 +138,15 @@ namespace TWS.Networking
             }
             catch (SocketException se)
             {
-                #if(WindowsCE == false)
-                LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", "In SendResponse(), SocketException thrown: " + se.Message, VERBOSITY_LEVEL.FATAL);
-                #else
-                LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", "In SendResponse(), SocketException thrown: " + se.Message, VERBOSITY_LEVEL.FATAL);
-                #endif
+                LOG.Fatal(se, "{Message}", "SocketException caught.");
             }
             catch (ObjectDisposedException ode)
             {
-                #if(WindowsCE == false)
-                LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", "In SendResponse(), ObjectDisposedException thrown: " + ode.Message, VERBOSITY_LEVEL.FATAL);
-                #else
-                LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", "In SendResponse(), ObjectDisposedException thrown: " + ode.Message, VERBOSITY_LEVEL.FATAL);
-                #endif
+                LOG.Fatal(ode, "{Message}", "ObjectDisposedException caught.");
             }
             catch (Exception ex)
             {
-                #if(WindowsCE == false)
-                LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", "In SendResponse(), Exception thrown: " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                #else
-                LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", "In SendResponse(), Exception thrown: " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                #endif
+                LOG.Fatal(ex, "{Message}", "Exception caught.");
             }
 
             return retVal;
@@ -195,34 +159,13 @@ namespace TWS.Networking
 	        //this method is only executed if no ReqInstance derived class method is executed
 	        //due to no existance of such derived class
 
-	        string strMsg = "";
-
-	        strMsg  =  "Message type->" + retVal.MessageType.ToString() + " received";
-            #if(WindowsCE == false)
-            LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", strMsg, VERBOSITY_LEVEL.INFO);
-            #else
-            LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", strMsg, VERBOSITY_LEVEL.INFO);
-            #endif
-
-	        strMsg = "Derived ReqInstance not implemented\0";
-
+            LOG.Info("{Message}", $"Message type->{retVal.MessageType} received");
+            
             retVal.MessageType = 0;
-            retVal.Body = Marshaling.ByteStream.ToPByte(strMsg);
+            retVal.Body = Marshaling.ByteStream.ToPByte("Derived ReqInstance not implemented\0");
             retVal.BodySize = retVal.Body.Length;
 
             return retVal;
-        }
-
-        protected virtual string LogFileName
-        {
-            get 
-            {
-                #if(WindowsCE == false)
-                return Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log";
-                #else
-                return Assembly.GetCallingAssembly().GetName().CodeBase + ".log";
-                #endif
-            }
         }
     }
 }

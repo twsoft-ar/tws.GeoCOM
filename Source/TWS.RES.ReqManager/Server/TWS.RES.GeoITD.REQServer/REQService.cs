@@ -10,7 +10,6 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TWS.GeoITD.Configuration;
 using TWS.Networking;
 using TWS.RES.GeoCOM;
 
@@ -41,7 +40,7 @@ namespace TWS.RES.GeoITD.REQServer
 
             string path = System.AppDomain.CurrentDomain.BaseDirectory;
 
-            ConfigMgr.Instance.Initialize(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName) + "\\TWS.MP.config");
+            //ConfigMgr.Instance.Initialize(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName) + "\\TWS.MP.config");
 
             /*if (!LicenseMgr.Instance.ValidateLicense(LicenseMgr.GLOBAL_LICENSE, false, out mMaxLicensedQty))
             {

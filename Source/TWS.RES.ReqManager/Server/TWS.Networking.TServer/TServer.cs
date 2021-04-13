@@ -6,14 +6,14 @@ using Microsoft.Win32;
 using System.Security.AccessControl;
 using System.Security.Permissions;
 using System.Reflection;
-using LOG = TWS.Log.Logger;
-using static TWS.Log.Logger;
 using TWS.Networking.Properties;
 
 namespace TWS.Networking
 {
     public class TServer
     {
+        private static readonly NLog.Logger LOG = NLog.LogManager.GetCurrentClassLogger();
+
         private Socket mListenerSocket;
         private int mServerTcpPort;
         private Thread mThreadDoServe = null;
@@ -54,6 +54,8 @@ namespace TWS.Networking
         #region Private Methods
         private void DoServe()
         {
+            LOG.Trace("ENTER");
+
             mListenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, mServerTcpPort);
 
@@ -75,38 +77,27 @@ namespace TWS.Networking
                     new Thread(RaiseNewConnectionEvent).Start(handleSocket);
                 }
             }
-            catch (SocketException ex)
+            catch (SocketException se)
             {
-                if (ex.ErrorCode != 10004) //when socket is closed 
-                {
-                    #if(WindowsCE == false)
-                    LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", this.ToString() + " DoServe() throws SocketException. " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                    #else
-                    Tools.Tools.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", this.ToString() + " DoServe() throws SocketException. " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                    #endif
-                    throw (ex);
+                if (se.ErrorCode != 10004) //when socket is closed 
+                {   
+                    LOG.Fatal(se, "{Message}", "SocketException caught.");
+                    throw (se); 
                 }
             }
-            catch (ObjectDisposedException ex)
+            catch (ObjectDisposedException ode)
             {
-                #if(WindowsCE == false)
-                LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", this.ToString() + " DoServe() throws ObjectDisposedException. " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                #else
-                LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", this.ToString() + " DoServe() throws ObjectDisposedException. " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                #endif
-                throw (ex);
+                LOG.Fatal(ode, "{Message}", "ObjectDisposedException caught.");
+                throw (ode);
             }
             catch (Exception ex)
             {
-                #if(WindowsCE == false)
-                LOG.Instance.LogEvent(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName + ".log", this.ToString() + " DoServe() throws Exception. " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                #else
-                LOG.Instance.LogEvent(Assembly.GetCallingAssembly().GetName().CodeBase + ".log", this.ToString() + " DoServe() throws Exception. " + ex.Message, VERBOSITY_LEVEL.FATAL);
-                #endif
+                LOG.Fatal(ex, "{Message}", "Exception caught.");
                 throw (ex);
             }
             finally
             {
+                LOG.Trace("EXIT");
                 CloseListenerSocket();
             }
         }

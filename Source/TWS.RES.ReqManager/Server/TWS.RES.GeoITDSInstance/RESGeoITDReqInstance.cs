@@ -12,7 +12,6 @@ namespace TWS.RES.GeoCOM
     public class RESGeoITDReqInstance : ReqInstance
     {
         private static readonly NLog.Logger LOG = NLog.LogManager.GetCurrentClassLogger();
-
         enum GEOITD_MSG { PURCHASE = 1, REVERSE = 2, PURCHASE_VOID= 3, PURCHASE_REFUND = 4, QUERY_REQUEST = 5, QUERY_REQUEST_NOWAIT = 6 };
 
         public RESGeoITDReqInstance(Socket socket_) : base(socket_)

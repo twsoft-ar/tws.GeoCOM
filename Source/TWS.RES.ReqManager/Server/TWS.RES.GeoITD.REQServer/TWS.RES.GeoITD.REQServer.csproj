@@ -95,9 +95,6 @@
       <Link>TWS.Networking.TServer.dll.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="..\TWS.GeoITD.Configuration\TWS.GeoITD.config">
-      <Link>TWS.GeoITD.config</Link>
-    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -110,10 +107,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TWS.GeoITD.Configuration\TWS.GeoCOM.Configuration.csproj">
-      <Project>{46215625-29F5-4561-B408-BC0904606432}</Project>
-      <Name>TWS.GeoCOM.Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TWS.Marshaling\TWS.Marshalling.csproj">
       <Project>{a9446e3f-511a-4ec2-a3f0-42ad3eed3228}</Project>
       <Name>TWS.Marshalling</Name>
