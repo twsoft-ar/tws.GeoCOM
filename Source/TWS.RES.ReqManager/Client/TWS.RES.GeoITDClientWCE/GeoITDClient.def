@@ -1,0 +1,8 @@
+LIBRARY "TWS.RES.GeoITDClientWCE50.dll"
+
+EXPORTS
+		Purchase		@1
+		PurchaseReverse @2
+		PurchaseVoid	@3
+		PurchaseRefund	@4
+		QueryStatus		@5

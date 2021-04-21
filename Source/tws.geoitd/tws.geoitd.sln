@@ -28,6 +28,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WSReqClientW32", "..\TWS.RES.ReqManager\Client\WSReqClientW32\WSReqClientW32.vcxproj", "{B0D1C26E-5A1B-4790-B5D9-E9855EC91C7F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TWS.RES.GeoITDClientW32", "..\TWS.RES.ReqManager\Client\TWS.RES.GeoITDClientW32\TWS.RES.GeoITDClient.vcxproj", "{06EC8784-6E4A-4400-91BD-91E663CC104C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B0D1C26E-5A1B-4790-B5D9-E9855EC91C7F} = {B0D1C26E-5A1B-4790-B5D9-E9855EC91C7F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestGeoITDClientC++", "TestGeoITDClientC++\TestGeoITDClientC++.vcxproj", "{FE7F07B6-494F-48BA-8E5F-3069C6CAC461}"
 EndProject

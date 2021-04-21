@@ -87,7 +87,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>WSReqClientW32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>lib\$(Configuration)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>GeoITDClient.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -112,7 +112,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>WSReqClientW32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>lib\$(Configuration)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>GeoITDClient.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>

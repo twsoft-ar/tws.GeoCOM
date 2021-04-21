@@ -50,16 +50,16 @@
     <_ProjectFileVersion>15.0.27625.0</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)bin\$(Configuration)</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration)</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)bin\$(Configuration)</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration)</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -88,8 +88,12 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Lib>
-      <AdditionalDependencies>ws2_32.lib;comsuppw.lib</AdditionalDependencies>
+      <AdditionalDependencies>comsuppw.lib</AdditionalDependencies>
+      <OutputFile>$(OutDir)\$(ProjectName).lib</OutputFile>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /S /E /Y  "$(TargetDir)$(TargetFileName)" "$(ProjectDir)..\TWS.RES.GeoITDClientW32\lib\$(Configuration)\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -113,8 +117,12 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Lib>
-      <AdditionalDependencies>ws2_32.lib;comsuppw.lib</AdditionalDependencies>
+      <AdditionalDependencies>comsuppw.lib</AdditionalDependencies>
+      <OutputFile>$(OutDir)\$(ProjectName).lib</OutputFile>
     </Lib>
+    <PostBuildEvent>
+      <Command>xcopy /S /E /Y  "$(TargetDir)$(TargetFileName)" "$(ProjectDir)..\TWS.RES.GeoITDClientW32\lib\$(Configuration)\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\WSReqClient\src\ByteStream.cpp" />

@@ -181,6 +181,7 @@ Var gblsEMVAppName 								:A32
 Var gblsMerchant  								:A32
 Var gblsInputMode 								:A40
 Var gblsCardOwnerName 							:A40
+Var gblsTaxAmount 								:A40
 Var gblsStoreName 								:A40
 Var gblsStoreRUT 								:A40
 Var gblsStoreAddress 							:A40
@@ -328,8 +329,9 @@ Sub ValidatePayment(Ref transactionId_, Ref transactionDateTime_)
 		If(paymentStatus = STATUS_APPROVED)
 
 			InfoMessage "Operacion APROBADA !!"
-						
-			Var lawDiscountAmount 	:A16 = "0"
+			
+			Var IntAux 				:N9 = gblsTaxAmount								
+			Var lawDiscountAmount 	:$12 = IntAux / 100.0
 			Var plan             	:A16 = "0"
 			Var installment       	:A16 = "1"
 			Var lawDisountText    	:A32 = ""
@@ -340,7 +342,13 @@ Sub ValidatePayment(Ref transactionId_, Ref transactionDateTime_)
 			Var cardName 			:A64
 			Var tipAmount 			:$12 = @CHGTIP
 			Var invoiceNumber 		:A16 = @CKNUM
-															
+											
+			Call GetLawNumberFromCode(gbliTaxRefund, lawNumber)
+			
+			If(lawDiscountAmount <> 0.00)
+				Format lawDisountText As "APLICA Ley ", lawNumber
+			EndIf
+			
 			If(gblsInputMode = "B")
 				inputMode = "BANDA"
 			ElseIf(gblsInputMode = "M")
@@ -509,7 +517,7 @@ Sub PrintVoucher(	Ref date_, 				Ref time_, 				Ref cardType_, 			Ref	cardName_,
 	
 		If(lawDiscountAmount_ <> 0.00)
 			Format fieldLeft As "Decuento Ley ", lawNumber_
-			Format fieldRight As lawDiscountAmount_ 
+			Format fieldRight As (-lawDiscountAmount_) 
 			Format prtLine As fieldLeft{<28}, fieldRight {>12} 
 			PrintLine prtLine 
 		EndIf
@@ -536,6 +544,11 @@ Sub PrintVoucher(	Ref date_, 				Ref time_, 				Ref cardType_, 			Ref	cardName_,
 		Format prtLine As fieldLeft{<20}, fieldRight {>20} 
 		PrintLine prtLine 
 		
+		If(lawDisountText_ <> "")
+			Format prtLine As lawDisountText_{=40} 
+			PrintLine prtLine 	
+		EndIf
+				
 		PrintLine ""
 		PrintLine ""
 				
@@ -974,7 +987,8 @@ Sub GetPaymentStatus(Ref transactionId_, Ref transDateTime_, Ref status_, Ref re
             							gbliAcquirer, 			\
             							gblsMerchant, 			\
             							gblsInputMode, 			\
-            							gblsCardOwnerName
+            							gblsCardOwnerName, 		\
+            							gblsTaxAmount
 
 			retVal_ = (status_ <> STATUS_ERROR)
 		Else		
@@ -1065,7 +1079,28 @@ Sub ClearGobalVars()
 	gblsMerchant 				= ""
 	gblsInputMode 				= ""
     gblsCardOwnerName 			= ""
-		
+	gblsTaxAmount 				= 0	
+EndSub
+
+//******************************************************************
+// Procedure: GetLawNumberFromCode()
+//******************************************************************
+Sub GetLawNumberFromCode(Var code_ :N9, Ref lawNumber_)
+	
+	lawNumber_ = ""
+	
+	If (code_ = 1)
+		lawNumber_ = "19.210"
+	ElseIf (code_ = 2)
+		lawNumber_ = "18.083"
+	ElseIf (code_ = 3)
+		lawNumber_ = "18.910"
+	ElseIf (code_ = 4)
+		lawNumber_ = "17.934"
+	ElseIf (code_ = 5)
+		lawNumber_ = "18.999"
+	EndIf
+	
 EndSub
 
 //******************************************************************
@@ -1145,7 +1180,7 @@ Sub SetFilePaths()
 
 		// This is a WinCE 5.0/6.0 client		
 	ElseIf gbliWSType = WS5_TYPE		
-		Format PATH_TO_GEOITD_DRIVER 		As "CF\micros\bin\TWS.RES.GeoITDClientWCE.dll"
+		Format PATH_TO_GEOITD_DRIVER 		As "CF\micros\bin\TWS.RES.GeoITDClientWCE50.dll"
 		Format ERROR_LOG_FILE_NAME 			As "CF\micros\etc\GEOITDLog.txt"
 		Format CONFIGURATION_FILE_NAME 		As "CF\micros\etc\GEOITD.cfg"
 		Format CONFIGURATION_FILE_NAME_PWS 	As "CF\micros\etc\GEOITD", @WSID, ".cfg"
@@ -1208,7 +1243,6 @@ Sub FreePaymentDrv()
 	If gblPaymentDrv <> 0
 		Call LogInfo(ERROR_LOG_FILE_NAME, "Unloading PAYMENT Driver", TRUE, TRUE)	
 		DLLFree gblPaymentDrv
-		Call LogInfo(ERROR_LOG_FILE_NAME, "Unloading PAYMENT Driver", TRUE, TRUE)	
 		gblPaymentDrv = 0	
 	EndIf
 
@@ -1338,6 +1372,19 @@ Sub SetCustomSetting(Ref sInfo_, Ref fn_, Var sFileName_ : A100 )
 			ErrorMessage "STORE_ADDRESS no especificado en ", sFileName_
 		EndIf
 
+	ElseIf	sTmp = "GEOCOM_TAX_REFUND_CODE"
+
+		// get value (should always be found below the key)
+		FReadLn fn_, sTmp
+		
+		// check its validity
+		If Trim(sTmp) <> ""					
+			gbliTaxRefund = sTmp			
+		Else
+			Call logInfo(ERROR_LOG_FILE_NAME, "GEOCOM_TAX_REFUND_CODE not specified", TRUE, TRUE)
+			ErrorMessage "GEOCOM_TAX_REFUND_CODE no especificado en ", sFileName_
+		EndIf
+
 	ElseIf	sTmp = "GEOCOM_TENDER_CREDIT_MAP"
 
 		Var objNum 		:N9
@@ -1443,8 +1490,7 @@ Sub SetCustomSetting(Ref sInfo_, Ref fn_, Var sFileName_ : A100 )
 		FReadLn fn_, sTmp
 		
 		// check its validity
-		If Trim(sTmp) <> ""
-			
+		If Trim(sTmp) <> ""			
 			// Turn on or off Unit price flag
 			gbliSelectedPrinterIndex = sTmp
 			

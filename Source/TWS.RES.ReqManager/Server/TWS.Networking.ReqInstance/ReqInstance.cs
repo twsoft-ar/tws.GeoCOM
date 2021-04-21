@@ -5,8 +5,6 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Runtime.InteropServices;
 using System.Reflection;
-using LOG = TWS.Log.Logger;
-using static TWS.Log.Logger;
 
 namespace TWS.Networking
 {

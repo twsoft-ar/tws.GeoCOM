@@ -9,7 +9,7 @@
 char HexToChar(char hex_);
 
 #if defined(UNDER_CE)
-#define LOG_FILE "\\CF\\micros\\etc\\MPQRClientLog.txt"
+#define LOG_FILE "\\CF\\micros\\etc\\GeoITDClientLog.txt"
 #else
 #define LOG_FILE "GeoITDClientLog.log"
 #endif

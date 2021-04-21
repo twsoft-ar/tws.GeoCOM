@@ -337,7 +337,8 @@ namespace TWS.RES.GeoCOM
                              $"acquirer={queryResponse.Acquirer}|" +
                              $"merchant={queryResponse.Merchant}|" +
                              $"input_mode={queryResponse.InputMode}|" +
-                             $"card_owner_name={queryResponse.CardOwnerName}";
+                             $"card_owner_name={queryResponse.CardOwnerName}|" +
+                             $"tax_amount={queryResponse.TaxAmount}";
                 }
                 else
                 {
